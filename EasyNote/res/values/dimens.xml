@@ -1,0 +1,22 @@
+<resources>
+
+    <!-- 登陆界面 -->
+   	<dimen name="login_top_height">75dip</dimen>
+    <dimen name="login_padding_left">20dip</dimen>
+	<dimen name="login_padding_right">20dip</dimen>
+	<dimen name="login_string_height">50dip</dimen>
+	<dimen name="login_info_height">70dip</dimen>
+	<dimen name="login_text_size">24dip</dimen>
+	<dimen name="login_button_margin_top">16dip</dimen>
+	
+	<!-- 列表页面 -->
+	<dimen name="note_list_action_split">3dip</dimen>
+	<dimen name="note_item_height">200dip</dimen>
+	<dimen name="note_item_text_size">16sp</dimen>
+	<dimen name="note_item_date_size">12sp</dimen>
+	<dimen name="note_item_image_width">30dp</dimen>
+	<dimen name="note_item_image_height">30dp</dimen>
+	<dimen name="note_item_margin_left">6dp</dimen>
+	
+	
+</resources>

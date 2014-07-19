@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/note_list_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:background="@color/white_color"
+    android:orientation="vertical" >
+    
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dip"
+        android:background="@color/back_light_gray"
+        android:id="@+id/normalLayout"
+        android:orientation="horizontal" >
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="40dip"
+            android:layout_weight="5"
+            android:background="@color/back_light_gray"
+            android:orientation="horizontal" >
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="40dip"
+            android:layout_weight="3"
+            android:background="@color/back_light_gray"
+            android:orientation="horizontal" >
+
+            <TextView 
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right|center"
+                android:layout_marginTop="@dimen/note_list_action_split"
+                android:layout_marginBottom="@dimen/note_list_action_split"
+                android:background="@color/split_gray"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:id="@+id/add_btn_img"
+                android:onClick="openEdit"
+                android:src="@drawable/note_list_add" />
+            <TextView 
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right|center"
+                android:layout_marginTop="@dimen/note_list_action_split"
+                android:layout_marginBottom="@dimen/note_list_action_split"
+                android:background="@color/split_gray"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:id="@+id/sync_btn_img"
+                android:src="@drawable/note_list_sync" />
+            <TextView 
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right|center"
+                android:layout_marginTop="@dimen/note_list_action_split"
+                android:layout_marginBottom="@dimen/note_list_action_split"
+                android:background="@color/split_gray"
+                />
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right|center"
+                android:id="@+id/search_btn_img"
+                android:src="@drawable/note_list_search" />
+        </LinearLayout>
+    </LinearLayout>
+    <ListView 
+	    android:id="@+id/lv_note"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center"
+	    android:background="#00ffffff"
+	    android:cacheColorHint="#00ffffff"
+	    android:divider="#00ffffff"
+	    android:dividerHeight="10dp"
+	    android:listSelector="#00ffffff"
+	    android:paddingLeft="5dp"
+	    android:paddingRight="5dp"
+	    android:fadingEdge="none"
+	    android:scrollbars="none" />
+</LinearLayout>
