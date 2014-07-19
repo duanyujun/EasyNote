@@ -22,6 +22,7 @@ public class BaseActivity extends Activity {
 		// 画面向左切换效果
 		this.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 	}
+	
 
 	/**
 	 * 启动一个activity

@@ -26,6 +26,7 @@
             android:layout_gravity="left|center"
             android:textColor="@color/black_color"
             android:textSize="@dimen/note_item_text_size"
+            android:singleLine="true"
 			android:ellipsize="end"
             />
     </LinearLayout>
