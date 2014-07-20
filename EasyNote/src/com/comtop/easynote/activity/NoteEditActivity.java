@@ -4,16 +4,25 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
+import android.media.AudioManager;
+import android.media.MediaRecorder;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
+import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.View;
@@ -22,6 +31,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -45,7 +56,9 @@ public class NoteEditActivity extends BaseActivity {
 	private UnderLineEditText mContent;
 	private EditText mTitle;
 	private TextView mNoteId;
+	private RelativeLayout rlRecordLayout;
 	private Button btnAttachment;
+	private Button finishRecordButton;
 	private String noteId;
 	private NoteDAO noteDAO;
 	private MyApplication application;
@@ -67,6 +80,9 @@ public class NoteEditActivity extends BaseActivity {
 		mContent = (UnderLineEditText)findViewById(R.id.et_content);
 		mTitle = (EditText)findViewById(R.id.et_title);
 		btnAttachment = (Button)findViewById(R.id.edit_attach_btn_content);
+		
+		wl = ((PowerManager)getSystemService("power")).newWakeLock(6, "comtop");
+	    am = ((AudioManager)getSystemService("audio"));
 		
 		initNote(); 
 		
@@ -173,6 +189,29 @@ public class NoteEditActivity extends BaseActivity {
 				}
 			}
 			
+			//处理音频
+			this.audioBtn.setEnabled(true);
+			if (this.mMediaRecorder != null)
+				this.mMediaRecorder.stop();
+			if (this.mUpdateTimerTask != null) {
+				this.mUpdateTimerTask.cancel();
+				this.mUpdateTimerTask = null;
+			}
+			if (this.mUpdateVolumTask != null) {
+				this.mUpdateVolumTask.cancel();
+				this.mUpdateVolumTask = null;
+			}
+			this.mMediaRecorder.release();
+			this.mMediaRecorder = null;
+			if (!isFinishing()) {
+				this.recordTimeText.setText("00:00");
+				this.topBarView.setLayoutParams(new LinearLayout.LayoutParams(
+						-1, -1));
+			}
+			this.isRecording = false;
+			this.wl.release();
+			this.am.abandonAudioFocus(this.afChangeListener);
+			
 		}
 		return super.onKeyDown(keyCode, event);
 	}
@@ -218,13 +257,19 @@ public class NoteEditActivity extends BaseActivity {
 		//初始化相应的button
 		Button btnCamera = (Button) findViewById(R.id.edit_photo_btn);
 		Button btnStt = (Button) findViewById(R.id.edit_stt_btn);
-		Button btnAudio = (Button) findViewById(R.id.edit_audio_btn);
+		audioBtn = (Button) findViewById(R.id.edit_audio_btn);
 		Button btnImage = (Button) findViewById(R.id.edit_lib_btn);
+		recordTimeText = (TextView)findViewById(R.id.record_time);
+		volumBar = (ProgressBar)findViewById(R.id.recordVolume);
+		topBarView = findViewById(R.id.top_bar);
+		finishRecordButton = ((Button)findViewById(R.id.btnRecordFinish));
 		
 		btnCamera.setOnClickListener(clickListener);
 		btnStt.setOnClickListener(clickListener);
-		btnAudio.setOnClickListener(clickListener);
+		audioBtn.setOnClickListener(clickListener);
 		btnImage.setOnClickListener(clickListener);
+		finishRecordButton.setOnClickListener(clickListener);
+		
 		
 		btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
 	}
@@ -259,19 +304,226 @@ public class NoteEditActivity extends BaseActivity {
 				break;	
 			case R.id.edit_audio_btn:
 				//录音
-				
+				v.setEnabled(false);
+				toggleRecordAudioAction();
 				break;
 			case R.id.edit_lib_btn:
 				//插入图片
 				IntentUtils.chooseImage(NoteEditActivity.this, toSaveNoteId, Constants.RESULT_IMAGE);
 				break;	
-
+			case R.id.btnRecordFinish:
+				NoteEditActivity.this.audioBtn.setEnabled(true);
+			    NoteEditActivity.this.toggleRecordAudioAction();
 			default:
 				break;
 			}
 			
+			
 		}
 	};
+	
+	private String audioFilepath = null;
+	private AudioManager am = null;
+	private Button audioBtn;
+	private MediaRecorder mMediaRecorder = null;
+	private TextView recordTimeText = null;
+	private ProgressBar volumBar = null;
+	private View topBarView = null;
+	private PowerManager.WakeLock wl = null;
+	private boolean isRecording = false;
+	private long mStartTime = 0L;
+	private Timer mTimer = new Timer();
+	private Toast mToast;
+	private TimerTask mUpdateTimerTask = null;
+	private final Handler mUpdateUIHandler = new Handler() {
+		public void handleMessage(Message paramAnonymousMessage) {
+			switch (paramAnonymousMessage.what) {
+			default:
+				return;
+			case 0:
+				NoteEditActivity.this.recordTimeText
+						.setText(paramAnonymousMessage.getData().getString(
+								"volum"));
+				return;
+			case 1:
+			}
+			NoteEditActivity.this.volumBar
+					.setProgress(paramAnonymousMessage.arg1);
+		}
+	};
+	private TimerTask mUpdateVolumTask = null;
+	private AudioManager.OnAudioFocusChangeListener musicAudioFocusChangeListenerForAsr = new AudioManager.OnAudioFocusChangeListener() {
+		public void onAudioFocusChange(int paramAnonymousInt) {
+			if (-1 == paramAnonymousInt) {
+//				if (NoteEditActivity.this.sndaRecognizeDlg != null)
+//					NoteEditActivity.this.sndaRecognizeDlg
+//							.SuspendRecognize(false);
+				if (NoteEditActivity.this.am != null)
+					NoteEditActivity.this.am
+							.abandonAudioFocus(NoteEditActivity.this.musicAudioFocusChangeListenerForAsr);
+			}
+		}
+	};
+	
+	private AudioManager.OnAudioFocusChangeListener afChangeListener = new AudioManager.OnAudioFocusChangeListener()
+	  {
+	    public void onAudioFocusChange(int paramAnonymousInt)
+	    {
+	      if ((paramAnonymousInt == -1) || (paramAnonymousInt == -2) || (paramAnonymousInt == -3))
+	      {
+	    	NoteEditActivity.this.audioBtn.setEnabled(true);
+	        NoteEditActivity.this.mMediaRecorder.stop();
+	        NoteEditActivity.this.mUpdateTimerTask.cancel();
+	        NoteEditActivity.this.mUpdateVolumTask.cancel();
+	        NoteEditActivity.this.mUpdateTimerTask = null;
+	        NoteEditActivity.this.mUpdateVolumTask = null;
+	        NoteEditActivity.this.mMediaRecorder.release();
+	        NoteEditActivity.this.mMediaRecorder = null;
+	        NoteEditActivity.this.recordTimeText.setText("00:00");
+	        //NoteEditActivity.this.topBarView.setLayoutParams(new LinearLayout.LayoutParams(-1, -1));
+	        NoteEditActivity.this.topBarView.setVisibility(View.VISIBLE);
+	        NoteEditActivity.this.isRecording = false;
+	        NoteEditActivity.this.wl.release();
+	        NoteEditActivity.this.am.abandonAudioFocus(NoteEditActivity.this.afChangeListener);
+	        //NoteEditActivity.this.showDialog(12);
+	      }
+	    }
+	  };
+	
+	private void toggleRecordAudioAction() {
+		if (this.mMediaRecorder == null) {
+			this.wl.acquire();
+			//NoteEditActivity.this.
+			NoteEditActivity.this.topBarView.setVisibility(View.GONE);
+//			SharedPreferences localSharedPreferences = PreferenceManager
+//					.getDefaultSharedPreferences(this);
+			//String str = "translte_audio_action" + Inote.getUserSndaID();
+			//localSharedPreferences.edit().putBoolean(str, false).commit();
+			this.mMediaRecorder = new MediaRecorder();
+			try {
+				this.mMediaRecorder.setAudioSource(1);
+				this.mMediaRecorder.setOutputFormat(3);
+				this.mMediaRecorder.setAudioEncoder(1);
+				this.mMediaRecorder.setAudioChannels(1);
+				
+				String noteIdDir = FileUtils.APP_ATTACH_PATH + "/" + toSaveNoteId;
+				if (!FileUtils.checkFileExists(noteIdDir)) {
+					FileUtils.createDIR(noteIdDir);
+				}
+				
+				this.audioFilepath = noteIdDir + "/"
+						+ StringUtils.getDataFormatFileName("audio_") + ".amr";
+				
+				File localFile1 = FileUtils.createFile(this.audioFilepath);
+				this.mMediaRecorder.setOutputFile(localFile1.getAbsolutePath());
+				this.mMediaRecorder.prepare();
+				this.am.requestAudioFocus(this.afChangeListener, 4, 1);
+				this.mMediaRecorder.start();
+				this.mStartTime = System.currentTimeMillis();
+//				this.topBarView.setLayoutParams(new LinearLayout.LayoutParams(
+//						0, -1));
+				this.mUpdateTimerTask = new UpdateTimerTask();
+				this.mUpdateVolumTask = new UpdateVolumeTask();
+				this.mTimer.schedule(this.mUpdateTimerTask, 1000L, 1000L);
+				this.mTimer.schedule(this.mUpdateVolumTask, 0L, 100L);
+				this.isRecording = true;
+				return;
+			} catch (Exception localException2) {
+				localException2.printStackTrace();
+				Toast.makeText(getApplicationContext(), getString(2131427848),
+						0).show();
+				this.mMediaRecorder.release();
+				this.mMediaRecorder = null;
+				this.wl.release();
+				this.am.abandonAudioFocus(this.afChangeListener);
+				this.audioBtn.setEnabled(true);
+				return;
+			}
+		}
+		try {
+			NoteEditActivity.this.topBarView.setVisibility(View.VISIBLE);
+			this.mMediaRecorder.stop();
+			this.mUpdateTimerTask.cancel();
+			this.mUpdateVolumTask.cancel();
+			this.mUpdateTimerTask = null;
+			this.mUpdateVolumTask = null;
+			this.mMediaRecorder.release();
+			this.mMediaRecorder = null;
+			this.mStartTime = 0L;
+			//addFileToAttachFileList(IOUtil.getExternalFile(this.audioFilepath));
+			btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
+			
+			//showToast(getString(2131427872));
+			this.recordTimeText.setText("00:00");
+//			this.topBarView.setLayoutParams(new LinearLayout.LayoutParams(-1,
+//					-1));
+			this.isRecording = false;
+			this.wl.release();
+			this.am.abandonAudioFocus(this.afChangeListener);
+			return;
+		} catch (Exception localException1) {
+			localException1.printStackTrace();
+			Toast.makeText(getApplicationContext(), getString(2131427848), 0)
+					.show();
+			this.mUpdateTimerTask.cancel();
+			this.mUpdateVolumTask.cancel();
+			this.mUpdateTimerTask = null;
+			this.mUpdateVolumTask = null;
+			if (this.mMediaRecorder != null) {
+				this.mMediaRecorder.release();
+				this.mMediaRecorder = null;
+			}
+			this.mStartTime = 0L;
+			this.recordTimeText.setText("00:00");
+			this.topBarView.setLayoutParams(new LinearLayout.LayoutParams(-1,
+					-1));
+			this.isRecording = false;
+			this.wl.release();
+			this.am.abandonAudioFocus(this.afChangeListener);
+		}
+	}
+	
+	class UpdateTimerTask extends TimerTask {
+		UpdateTimerTask() {
+		}
+
+		public void run() {
+			Message localMessage = new Message();
+			localMessage.what = 0;
+			long l = (System.currentTimeMillis() - NoteEditActivity.this.mStartTime) / 1000L;
+			NoteEditActivity localNoteEditActivity = NoteEditActivity.this;
+			Object[] arrayOfObject = new Object[2];
+			arrayOfObject[0] = Long.valueOf(l / 60L);
+			arrayOfObject[1] = Long.valueOf(l % 60L);
+			String str = localNoteEditActivity.getString(R.string.timer_format,
+					arrayOfObject);
+			Bundle localBundle = new Bundle();
+			localBundle.putString("volum", str);
+			localMessage.setData(localBundle);
+			NoteEditActivity.this.mUpdateUIHandler.sendMessage(localMessage);
+		}
+	}
+
+	class UpdateVolumeTask extends TimerTask {
+		UpdateVolumeTask() {
+		}
+
+		public void run() {
+			if (NoteEditActivity.this.mMediaRecorder == null)
+				return;
+			try {
+				Message localMessage = new Message();
+				localMessage.what = 1;
+				localMessage.arg1 = (100 * NoteEditActivity.this.mMediaRecorder
+						.getMaxAmplitude() / 32768);
+				NoteEditActivity.this.mUpdateUIHandler
+						.sendMessage(localMessage);
+				return;
+			} catch (Exception localException) {
+				cancel();
+			}
+		}
+	}
 	
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {

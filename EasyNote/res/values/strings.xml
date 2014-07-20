@@ -29,5 +29,6 @@
 	<string name="richtext_choose_append">追加文本</string>
 	<string name="richtext_choose_reformat">转换文本</string>
 	<string name="intent_no_camera">没有找到摄像头</string>
+	<string name="timer_format">%1$02d:%2$02d</string>
 	
 </resources>
