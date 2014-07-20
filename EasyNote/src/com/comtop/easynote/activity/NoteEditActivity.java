@@ -201,7 +201,9 @@ public class NoteEditActivity extends BaseActivity {
 				this.mUpdateVolumTask.cancel();
 				this.mUpdateVolumTask = null;
 			}
-			this.mMediaRecorder.release();
+			if(this.mMediaRecorder!=null){
+				this.mMediaRecorder.release();
+			}
 			this.mMediaRecorder = null;
 			if (!isFinishing()) {
 				this.recordTimeText.setText("00:00");
