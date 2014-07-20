@@ -7,6 +7,9 @@
 
 package com.comtop.easynote.utils;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 /**
  * 字符串处理工具类
  * @since JDK1.6
@@ -57,4 +60,12 @@ public class StringUtils {
 	public static boolean isNotEmpty(String str) {
 		return (str != null) && (str.length() > 0);
 	}
+	
+	public static String getDataFormatFileName(String paramString){
+		
+	    String str = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss").format(new Date());
+	    return paramString + str;
+	}
+
+	
 }

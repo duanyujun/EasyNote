@@ -4,10 +4,12 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -17,9 +19,12 @@ import android.widget.Toast;
 import com.comtop.common.BaseActivity;
 import com.comtop.common.MyApplication;
 import com.comtop.easynote.R;
+import com.comtop.easynote.constants.Constants;
 import com.comtop.easynote.dao.NoteDAO;
 import com.comtop.easynote.model.NoteVO;
 import com.comtop.easynote.utils.DatabaseHelper;
+import com.comtop.easynote.utils.FileUtils;
+import com.comtop.easynote.utils.IntentUtils;
 import com.comtop.easynote.utils.StringUtils;
 import com.comtop.easynote.view.UnderLineEditText;
 
@@ -31,6 +36,7 @@ public class NoteEditActivity extends BaseActivity {
 	private UnderLineEditText mContent;
 	private EditText mTitle;
 	private TextView mNoteId;
+	private Button btnAttachment;
 	private String noteId;
 	private NoteDAO noteDAO;
 	private MyApplication application;
@@ -51,6 +57,7 @@ public class NoteEditActivity extends BaseActivity {
 		ibToggleTool.setBackgroundDrawable(getResources().getDrawable(R.drawable.newdoc_ancor_up));
 		mContent = (UnderLineEditText)findViewById(R.id.et_content);
 		mTitle = (EditText)findViewById(R.id.et_title);
+		btnAttachment = (Button)findViewById(R.id.edit_attach_btn_content);
 		
 		initNote(); 
 		
@@ -193,6 +200,19 @@ public class NoteEditActivity extends BaseActivity {
 		}else{
 			toSaveNoteId = String.valueOf(System.currentTimeMillis());
 		}
+		
+		//初始化相应的button
+		Button btnCamera = (Button) findViewById(R.id.edit_photo_btn);
+		Button btnStt = (Button) findViewById(R.id.edit_stt_btn);
+		Button btnAudio = (Button) findViewById(R.id.edit_audio_btn);
+		Button btnImage = (Button) findViewById(R.id.edit_lib_btn);
+		
+		btnCamera.setOnClickListener(clickListener);
+		btnStt.setOnClickListener(clickListener);
+		btnAudio.setOnClickListener(clickListener);
+		btnImage.setOnClickListener(clickListener);
+		
+		btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
 	}
 	
 	/**
@@ -210,5 +230,46 @@ public class NoteEditActivity extends BaseActivity {
 			ibToggleTool.setBackgroundDrawable(getResources().getDrawable(R.drawable.newdoc_ancor_up));
 		}
 	}
+	
+	View.OnClickListener clickListener = new View.OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			switch (v.getId()) {
+			case R.id.edit_photo_btn:
+				//拍照
+				IntentUtils.openCamera(NoteEditActivity.this, toSaveNoteId, Constants.RESULT_PHOTO);
+				break;
+			case R.id.edit_stt_btn:
+				//转文字
+				
+				break;	
+			case R.id.edit_audio_btn:
+				//录音
+				
+				break;
+			case R.id.edit_lib_btn:
+				//插入图片
+				
+				break;	
+
+			default:
+				break;
+			}
+			
+		}
+	};
+	
+	@Override
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+		if(resultCode == RESULT_OK){
+			switch(requestCode){
+				case Constants.RESULT_PHOTO:
+					btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
+					Toast.makeText(this, "success", Toast.LENGTH_SHORT);
+					break;
+			}
+		}
+	};
 	
 }

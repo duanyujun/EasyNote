@@ -16,6 +16,7 @@ import com.comtop.easynote.adapter.NoteListAdapter;
 import com.comtop.easynote.dao.NoteDAO;
 import com.comtop.easynote.model.NoteVO;
 import com.comtop.easynote.utils.DatabaseHelper;
+import com.comtop.easynote.utils.FileUtils;
 
 public class NoteListActivity extends BaseActivity implements com.comtop.easynote.adapter.NoteListAdapter.OnLongClickListener{
 
@@ -41,6 +42,18 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		adapter =new NoteListAdapter(this, listData);
 		adapter.setOnLongClickListener(this);
 		lvNote.setAdapter(adapter);
+		
+		initSdDir();
+	}
+	
+	private void initSdDir(){
+		if (!FileUtils.checkFileExists(FileUtils.APP_PATH)) {
+			FileUtils.createDIR(FileUtils.APP_PATH);
+		}
+		
+		if (!FileUtils.checkFileExists(FileUtils.APP_ATTACH_PATH)) {
+			FileUtils.createDIR(FileUtils.APP_ATTACH_PATH);
+		}
 	}
 	
 	@Override

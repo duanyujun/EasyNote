@@ -22,11 +22,12 @@
 	<string name="recoding">录音</string>
 	<string name="handwrite">手写</string>
 	<string name="drawing">涂鸦</string>
-	<string name="file">文件</string>
+	<string name="file">图片</string>
 	<string name="tags">标签</string>
 	<string name="category">分类</string>
 	<string name="richtext_choose_tip">您可以选择下列方式对富文本进行编辑</string>
 	<string name="richtext_choose_append">追加文本</string>
 	<string name="richtext_choose_reformat">转换文本</string>
+	<string name="intent_no_camera">没有找到摄像头</string>
 	
 </resources>

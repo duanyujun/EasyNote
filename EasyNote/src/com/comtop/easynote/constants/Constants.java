@@ -1,6 +1,6 @@
 package com.comtop.easynote.constants;
 
-public class Constants {
+public final class Constants {
 
 	public static final String USER_NAME = "userName";
 
@@ -15,5 +15,13 @@ public class Constants {
 	public final static String RSA_PRIVATE_EXPONENT = "62B65EE041B07A274AF3BC81985CD301";
 	
 	public final static String DEFAULT_TITLE = "Œﬁ±ÍÃ‚";
+	
+	public final static int RESULT_PHOTO = 1;
+	
+	public final static int RESULT_STT = 1;
+	
+	public final static int RESULT_AUDIO = 1;
+	
+	public final static int RESULT_IMAGE = 1;
 	
 }
