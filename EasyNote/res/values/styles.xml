@@ -16,5 +16,52 @@
     <style name="AppTheme" parent="AppBaseTheme">
         <!-- All customizations that are NOT specific to a particular API-level can go here. -->
     </style>
+    
+    <style name="nav_save_btn_title">
+        <item name="android:textSize">13.0sp</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:shadowColor">#ff44afec</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">2.0</item>
+        <item name="android:shadowRadius">3.0</item>
+    </style>
+    
+    <style name="nav_edit_title">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">#ff000000</item>
+        <item name="android:singleLine">true</item>
+    </style>
+    
+    <style name="nav_normal_btn_title">
+        <item name="android:textSize">13.0sp</item>
+        <item name="android:textColor">#ff686868</item>
+        <item name="android:shadowColor">#ffffffff</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">2.0</item>
+        <item name="android:shadowRadius">3.0</item>
+    </style>
+    
+    <style name="note_edit_tool_bar_text">
+        <item name="android:textSize">12.0sp</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:background">@null</item>
+    </style>
+    
+    <style name="note_edit_content">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textColor">#ff000000</item>
+        <item name="android:gravity">top|left|center</item>
+        <item name="android:minHeight">100.0dip</item>
+    </style>
+    
+    <style name="edit_attach_btn">
+        <item name="android:textSize">18.0sp</item>
+        <item name="android:textColor">#ffffffff</item>
+        <item name="android:background">@drawable/attach_note_edit_bg</item>
+        <item name="android:layout_marginRight">10.0dip</item>
+        <item name="android:layout_marginBottom">12.0dip</item>
+        <item name="android:layout_alignParentRight">true</item>
+        <item name="android:layout_alignParentBottom">true</item>
+    </style>
 
 </resources>

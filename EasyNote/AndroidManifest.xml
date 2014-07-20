@@ -25,7 +25,9 @@
         <activity android:name="com.comtop.easynote.activity.NoteListActivity" >
         </activity>
         <activity android:name="com.comtop.easynote.activity.NoteEditActivity"
-            android:windowSoftInputMode="stateHidden|adjustPan"
+            android:launchMode="singleTop" 
+            android:configChanges="keyboardHidden|orientation" 
+            android:windowSoftInputMode="stateHidden|adjustResize"
             >
         </activity>
         <activity android:name="com.comtop.easynote.activity.NoteViewActivity" >

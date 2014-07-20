@@ -12,5 +12,21 @@
 	
 	<!-- 笔记编辑页面 -->
 	<string name="note_edit_title_hint">标题...</string>
+	<string name="note_edit_save">保存</string>
+	<string name="note_add_title">点击输入标题</string>
+	<string name="cancel">取消</string>
+	<string name="finish_record">完成</string>
+	
+	<string name="camera">拍照</string>
+	<string name="record_trans_btn_title">转文字</string>
+	<string name="recoding">录音</string>
+	<string name="handwrite">手写</string>
+	<string name="drawing">涂鸦</string>
+	<string name="file">文件</string>
+	<string name="tags">标签</string>
+	<string name="category">分类</string>
+	<string name="richtext_choose_tip">您可以选择下列方式对富文本进行编辑</string>
+	<string name="richtext_choose_append">追加文本</string>
+	<string name="richtext_choose_reformat">转换文本</string>
 	
 </resources>

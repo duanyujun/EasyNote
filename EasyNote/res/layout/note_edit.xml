@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:background="@drawable/background_back" android:layout_width="fill_parent" android:layout_height="fill_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:background="@drawable/navigationbar" android:layout_width="fill_parent" android:layout_height="wrap_content">
+        <LinearLayout android:layout_width="fill_parent" android:layout_height="48.0dip" android:orientation="vertical">
+            <RelativeLayout android:id="@+id/top_bar" android:layout_width="fill_parent" android:layout_height="fill_parent">
+                <Button android:id="@+id/btnNoteSubmit" android:background="@drawable/nav_save_btn_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8.0dip" android:text="@string/note_edit_save" android:layout_alignParentRight="true" android:layout_centerVertical="true" style="@style/nav_save_btn_title" />
+                <EditText android:id="@+id/iptNoteTitle" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="66.0dip" android:layout_marginRight="2.0dip" android:hint="@string/note_add_title" android:maxLength="100" android:layout_toLeftOf="@id/btnNoteSubmit" android:layout_centerVertical="true" android:imeOptions="actionNext" style="@style/nav_edit_title" />
+                <Button android:id="@+id/btnNoteCancel" android:background="@drawable/nav_normal_btn_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:text="@string/cancel" android:layout_centerVertical="true" style="@style/nav_normal_btn_title" />
+            </RelativeLayout>
+            <RelativeLayout android:gravity="center_vertical" android:id="@+id/record_layout" android:layout_width="fill_parent" android:layout_height="48.0dip" >
+                <TextView android:id="@+id/record_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:text="00:00" android:layout_centerVertical="true" />
+                <Button android:id="@+id/btnRecordFinish" android:background="@drawable/nav_save_btn_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8.0dip" android:text="@string/finish_record" android:layout_alignParentRight="true" android:layout_centerVertical="true" style="@style/nav_save_btn_title" />
+                <RelativeLayout android:gravity="center_vertical" android:background="@drawable/sound_bg" android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="8.0dip" android:layout_marginTop="8.0dip" android:layout_marginRight="8.0dip" android:layout_marginBottom="8.0dip" android:layout_toLeftOf="@id/btnRecordFinish" android:layout_toRightOf="@id/record_time">
+                    <ImageView android:id="@+id/recordIcon" android:layout_width="wrap_content" android:layout_height="fill_parent" android:layout_marginRight="8.0dip" android:src="@drawable/sound_icon"  />
+                    <ProgressBar android:id="@+id/recordVolume" android:layout_width="fill_parent" android:layout_height="9.0dip" android:maxHeight="9.0dip" android:progressDrawable="@drawable/record_volum_progress" android:minHeight="9.0dip"  android:layout_toRightOf="@id/recordIcon" android:layout_centerVertical="true" style="?android:attr/progressBarStyleHorizontal" />
+                    <ImageView android:background="@drawable/sound_marked" android:layout_width="wrap_content" android:layout_height="wrap_content" android:scaleType="centerInside" android:layout_alignLeft="@id/recordVolume" android:layout_alignRight="@id/recordVolume" android:layout_alignParentBottom="true" />
+                </RelativeLayout>
+            </RelativeLayout>
+        </LinearLayout>
+        <LinearLayout android:background="@drawable/topmask" android:layout_width="fill_parent" android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout 
+        android:orientation="vertical" 
+        android:id="@+id/attachlayout" 
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        >
+        <HorizontalScrollView android:id="@+id/note_tool_bar" android:scrollbars="none" android:fadingEdge="none" android:layout_width="fill_parent" android:layout_height="wrap_content">
+            <TableLayout android:focusable="false" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                <TableRow android:gravity="left" android:layout_width="wrap_content" android:layout_height="wrap_content">
+                    <Button android:id="@+id/edit_photo_btn" android:background="@null" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/camera" android:drawableTop="@drawable/bottom_icon_photo01_selector" style="@style/note_edit_tool_bar_text" />
+                    <Button android:id="@+id/edit_stt_btn" android:background="@null" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/record_trans_btn_title" android:drawableTop="@drawable/edit_stt_btn" style="@style/note_edit_tool_bar_text" />
+                    <Button android:id="@+id/edit_audio_btn" android:background="@null" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/recoding" android:drawableTop="@drawable/edit_audio_btn" style="@style/note_edit_tool_bar_text" />
+                    <Button android:id="@+id/edit_pen_textview" android:background="@null" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/handwrite" android:drawableTop="@drawable/bottom_icon_pen_selector" style="@style/note_edit_tool_bar_text" />
+                    <Button android:id="@+id/edit_scrawl_textview" android:background="@null" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/drawing" android:drawableTop="@drawable/paint_white" style="@style/note_edit_tool_bar_text" />
+                    <Button android:id="@+id/edit_lib_btn" android:background="@null" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/file" android:drawableTop="@drawable/bottom_icon_file01_selector" style="@style/note_edit_tool_bar_text" />
+                    <Button android:id="@+id/edit_tag_btn" android:background="@null" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/tags" android:drawableTop="@drawable/bottom_icon_tag01_selector" style="@style/note_edit_tool_bar_text" />
+                    <Button android:id="@+id/edit_category_btn" android:background="@null" android:layout_width="80.0dip" android:layout_height="wrap_content" android:text="@string/category" android:drawableTop="@drawable/bottom_icon_cata01_selector" style="@style/note_edit_tool_bar_text" />
+                </TableRow>
+            </TableLayout>
+        </HorizontalScrollView>
+        <LinearLayout android:id="@+id/tool_wood_line" 
+            android:background="@drawable/text_wood_line" 
+            android:layout_width="fill_parent" 
+            android:layout_height="wrap_content" 
+            android:orientation="horizontal"
+            />
+    </LinearLayout>
+    <RelativeLayout 
+        android:background="@drawable/all_bg" 
+        android:layout_width="fill_parent" 
+        android:layout_height="0.0dip" 
+        android:layout_weight="1.0">
+        <EditText 
+            android:id="@+id/iptNoteBody" 
+            android:background="@color/note_view_bg" 
+            android:layout_width="fill_parent" 
+            android:layout_height="fill_parent" 
+            android:layout_marginLeft="1.0dip" 
+            android:layout_marginTop="10.0dip" 
+            android:layout_marginRight="1.0dip" 
+            android:layout_marginBottom="1.0dip"  
+            android:imeOptions="actionDone" 
+            style="@style/note_edit_content" />
+        <Button 
+            android:id="@+id/toggleToolBtn_bg_btn" 
+            android:background="@null" 
+            android:layout_width="60.0dip" 
+            android:layout_height="44.0dip" 
+            android:layout_centerHorizontal="true" />
+        <ImageButton 
+            android:id="@+id/toggleToolBtn" 
+            android:onClick="toggleAttachLayout"
+            android:background="@null" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:layout_centerHorizontal="true" />
+        <LinearLayout android:gravity="center_horizontal" android:orientation="vertical" android:id="@+id/edit_mode_choose_view" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginBottom="10.0dip" android:layout_centerInParent="true">
+            <TextView 
+                android:layout_width="wrap_content" 
+                android:layout_height="wrap_content" 
+                android:text="@string/richtext_choose_tip" />
+            <LinearLayout android:gravity="center_horizontal" android:orientation="horizontal" android:layout_width="fill_parent" android:layout_height="wrap_content">
+                <Button android:textColor="#ff000000" android:id="@+id/edit_rich_append" android:background="@drawable/edit_choose_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/richtext_choose_append" />
+                <Button android:textColor="#ff000000" android:id="@+id/edit_rich_toPlaneText" android:background="@drawable/edit_choose_btn" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="10.0dip" android:text="@string/richtext_choose_reformat" />
+            </LinearLayout>
+        </LinearLayout>
+        <Button 
+            android:text="10"
+            android:id="@+id/edit_attach_btn_content" 
+            android:layout_width="wrap_content" 
+            android:layout_height="wrap_content" 
+            android:drawableLeft="@drawable/newdoc_attachmenticon" 
+            style="@style/edit_attach_btn" />
+    </RelativeLayout>
+</LinearLayout>
