@@ -1,8 +1,12 @@
 package com.comtop.easynote.utils;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
 import android.os.Environment;
 
 public class FileUtils {
@@ -53,6 +57,35 @@ public class FileUtils {
 		}else{
 			return 0;
 		}
+	}
+	
+	/**
+	 * 保存选择好的图片
+	 * @param bitmap
+	 * @param path
+	 * @param fileName
+	 * @return
+	 */
+	public static String savePicToSdcard(Bitmap bitmap, String path,
+			String fileName) {
+		String filePath = "";
+		if (bitmap == null) {
+			return filePath;
+		} else {
+
+			filePath=path+ "/" + fileName;
+			File destFile = new File(filePath);
+			OutputStream os = null;
+			try {
+				os = new FileOutputStream(destFile);
+				bitmap.compress(CompressFormat.JPEG, 100, os);
+				os.flush();
+				os.close();
+			} catch (IOException e) {
+				filePath = "";
+			}
+		}
+		return filePath;
 	}
 	
 }

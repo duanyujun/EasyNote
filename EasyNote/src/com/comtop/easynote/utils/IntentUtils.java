@@ -38,5 +38,19 @@ public final class IntentUtils {
 		}
 		return strFile;
 	}
-
+	
+	public static final void chooseImage(Activity paramActivity, String noteId,
+			int paramInt) {
+		// 新建当前noteId目录
+		String noteIdDir = FileUtils.APP_ATTACH_PATH + "/" + noteId;
+		if (!FileUtils.checkFileExists(noteIdDir)) {
+			FileUtils.createDIR(noteIdDir);
+		}
+		
+		Intent intent = new Intent();  
+        intent.setType("image/*");  
+        intent.setAction(Intent.ACTION_GET_CONTENT);  
+        paramActivity.startActivityForResult(intent, paramInt);  
+		
+	}
 }

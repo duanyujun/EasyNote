@@ -1,11 +1,20 @@
 package com.comtop.easynote.activity;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.Bitmap.CompressFormat;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
@@ -75,6 +84,11 @@ public class NoteEditActivity extends BaseActivity {
 		noteVO.setUserId(application.getUserId());
 	    String strTitle = mTitle.getText().toString();
 	    String strContent = mContent.getText().toString();
+	    if(StringUtils.isBlank(strTitle) && StringUtils.isBlank(strContent)){
+	    	Toast.makeText(this, "请至少输入标题", Toast.LENGTH_SHORT).show();
+	    	return;
+	    }
+	    
 	    noteVO.setNoteTitle(strTitle);
 		noteVO.setNoteContent(strContent);
 		if(StringUtils.isNotBlank(noteId)){
@@ -249,7 +263,7 @@ public class NoteEditActivity extends BaseActivity {
 				break;
 			case R.id.edit_lib_btn:
 				//插入图片
-				
+				IntentUtils.chooseImage(NoteEditActivity.this, toSaveNoteId, Constants.RESULT_IMAGE);
 				break;	
 
 			default:
@@ -266,8 +280,41 @@ public class NoteEditActivity extends BaseActivity {
 			switch(requestCode){
 				case Constants.RESULT_PHOTO:
 					btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
-					Toast.makeText(this, "success", Toast.LENGTH_SHORT);
+					//Toast.makeText(this, "success", Toast.LENGTH_SHORT);
 					break;
+				case Constants.RESULT_IMAGE:
+					if (data != null) {  
+		                Uri mImageCaptureUri = data.getData();  
+		                if (mImageCaptureUri != null) {  
+		                    Bitmap image;  
+		                    try {  
+		                        image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageCaptureUri);  
+		                        if (image != null) {  
+		                            FileUtils.savePicToSdcard(image,
+		                            		FileUtils.APP_ATTACH_PATH + "/" + toSaveNoteId, 
+		                            		StringUtils.getDataFormatFileName("img_") + ".jpg");
+		                        }  
+		                    } catch (Exception e) {  
+		                        e.printStackTrace();  
+		                    }  
+		                } else {  
+		                    Bundle extras = data.getExtras();  
+		                    if (extras != null) {  
+		                        //这里是有些拍照后的图片是直接存放到Bundle中的所以我们可以从这里面获取Bitmap图片  
+		                        Bitmap image = extras.getParcelable("data");  
+		                        if (image != null) {  
+		                        	FileUtils.savePicToSdcard(image,
+		                            		FileUtils.APP_ATTACH_PATH + "/" + toSaveNoteId, 
+		                            		StringUtils.getDataFormatFileName("img_") + ".jpg");
+		                        }  
+		                    }  
+		                }  
+		                
+		                btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
+		            } 
+					break;
+				default:
+					break;	
 			}
 		}
 	};

@@ -18,10 +18,10 @@ public final class Constants {
 	
 	public final static int RESULT_PHOTO = 1;
 	
-	public final static int RESULT_STT = 1;
+	public final static int RESULT_STT = 2;
 	
-	public final static int RESULT_AUDIO = 1;
+	public final static int RESULT_AUDIO = 3;
 	
-	public final static int RESULT_IMAGE = 1;
+	public final static int RESULT_IMAGE = 4;
 	
 }
