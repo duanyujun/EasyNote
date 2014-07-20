@@ -8,6 +8,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.comtop.common.BaseActivity;
@@ -24,6 +25,7 @@ public class NoteEditActivity extends BaseActivity {
 	private NoteDAO noteDAO;
 	private TextView mNoteId;
 	private UnderLineEditText mContent;
+	private EditText mTitle;
 	private MyApplication application;
 	private boolean isEditing = true;
 	private String noteId;
@@ -35,6 +37,7 @@ public class NoteEditActivity extends BaseActivity {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.note_edit_main);
 		mContent = (UnderLineEditText)findViewById(R.id.et_content);
+		mTitle = (EditText)findViewById(R.id.et_title);
 		
 		Intent objIntent = this.getIntent();
 		noteId = objIntent.getStringExtra("noteId");
@@ -43,9 +46,15 @@ public class NoteEditActivity extends BaseActivity {
 			mContent.setText(noteContent);
 			mContent.setSelection(noteContent.length());
 		}
+		String noteTitle = objIntent.getStringExtra("noteTitle");
+		if(StringUtils.isNotBlank(noteTitle)){
+			mTitle.setText(noteTitle);
+		}
 		if(StringUtils.isNotBlank(noteId)){
 			mNoteId = (TextView)findViewById(R.id.tv_note_id);
 			mNoteId.setText(noteId);
+			mTitle.setFocusableInTouchMode(false);
+			mTitle.clearFocus();
 			mContent.setFocusableInTouchMode(false);
 			mContent.clearFocus();
 			isEditing = false;
@@ -61,6 +70,8 @@ public class NoteEditActivity extends BaseActivity {
 	
 	public void editNote(View view){
 		//Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show();
+		mTitle.setFocusableInTouchMode(true);
+		mTitle.requestFocus();
 		mContent.setFocusableInTouchMode(true);
 		mContent.requestFocus();
 		isEditing = true;
@@ -72,6 +83,8 @@ public class NoteEditActivity extends BaseActivity {
 			if(StringUtils.isNotBlank(mContent.getText().toString())){
 				if(isEditing){
 					saveNote();
+					mTitle.setFocusableInTouchMode(false);
+					mTitle.clearFocus();
 					mContent.setFocusableInTouchMode(false);
 					mContent.clearFocus();
 					isEditing = false;
@@ -106,7 +119,10 @@ public class NoteEditActivity extends BaseActivity {
 	private void saveNote(){
 		NoteVO noteVO = new NoteVO();
 		noteVO.setUserId(application.getUserId());
-		noteVO.setNoteContent(mContent.getText().toString());
+	    String strTitle = mTitle.getText().toString();
+	    String strContent = mContent.getText().toString();
+	    noteVO.setNoteTitle(strTitle);
+		noteVO.setNoteContent(strContent);
 		if(StringUtils.isNotBlank(noteId)){
 			noteVO.setNoteId(noteId);
 			noteDAO.updateNote(noteVO);

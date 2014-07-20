@@ -10,6 +10,8 @@ public class NoteVO {
 	
 	private String userId;
 	
+	private String noteTitle;
+	
 	private String noteContent;
 	
 	private Timestamp modifyTime;
@@ -31,6 +33,14 @@ public class NoteVO {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public String getNoteTitle() {
+		return noteTitle;
+	}
+
+	public void setNoteTitle(String noteTitle) {
+		this.noteTitle = noteTitle;
 	}
 
 	public String getNoteContent() {

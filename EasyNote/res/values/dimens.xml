@@ -18,5 +18,11 @@
 	<dimen name="note_item_image_height">30dp</dimen>
 	<dimen name="note_item_margin_left">6dp</dimen>
 	
+	<!-- 编辑页面 -->
+	<dimen name="note_edit_title_size">16sp</dimen>
+	<dimen name="note_edit_content_size">20sp</dimen>
+	
+	<!-- 只读页面 -->
+	<dimen name="note_view_content_size">20sp</dimen>
 	
 </resources>

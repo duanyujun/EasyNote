@@ -28,6 +28,8 @@
             android:windowSoftInputMode="stateHidden|adjustPan"
             >
         </activity>
+        <activity android:name="com.comtop.easynote.activity.NoteViewActivity" >
+        </activity>
     </application>
 
 </manifest>

@@ -36,9 +36,10 @@ public class NoteDAO {
 		db.beginTransaction();
 		//t_note表新增sql
 		sbNoteSql.append(" insert into ").append(DatabaseHelper.T_NOTE)
-		  		 .append(" (note_id, user_id, note_content) values ")
+		  		 .append(" (note_id, user_id, note_title, note_content) values ")
 		         .append(" ('").append(noteVO.getNoteId())
 		         .append("','").append(noteVO.getUserId())
+		         .append("','").append(noteVO.getNoteTitle())
 		         .append("','").append(noteVO.getNoteContent())
 		         .append("')");
 		db.execSQL(sbNoteSql.toString());
@@ -122,8 +123,9 @@ public class NoteDAO {
 		while(cursor.moveToNext()){
 			noteVO.setNoteId(cursor.getString(0));
 			noteVO.setUserId(cursor.getString(1));
-			noteVO.setNoteContent(cursor.getString(2));
-			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(3)));
+			noteVO.setNoteTitle(cursor.getString(2));
+			noteVO.setNoteContent(cursor.getString(3));
+			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
 		}
 		
 		//读取FileVO
@@ -149,6 +151,7 @@ public class NoteDAO {
 	public int updateNote(NoteVO noteVO){
 		SQLiteDatabase db = helper.getWritableDatabase();
 		ContentValues cv = new ContentValues();
+		cv.put("note_title", noteVO.getNoteTitle());
 		cv.put("note_content", noteVO.getNoteContent());
 		cv.put("modify_time", DateTimeUtils.formatDateTime(
 				new Timestamp(new Date().getTime()), DateTimeUtils.ISO_DATETIME_FORMAT));
@@ -177,8 +180,9 @@ public class NoteDAO {
 			NoteVO noteVO = new NoteVO();
 			noteVO.setNoteId(cursor.getString(0));
 			noteVO.setUserId(cursor.getString(1));
-			noteVO.setNoteContent(cursor.getString(2));
-			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(3)));
+			noteVO.setNoteTitle(cursor.getString(2));
+			noteVO.setNoteContent(cursor.getString(3));
+			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
 			lstNote.add(noteVO);
 		}
 		

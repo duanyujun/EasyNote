@@ -15,7 +15,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 	
 	public static String T_NOTE = "t_note";
 	
-	public static String T_FILE = "t_attachment";
+	public static String T_FILE = "t_file";
 	
 	public DatabaseHelper(Context context, String name, CursorFactory factory,
 			int version) {
@@ -33,7 +33,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		StringBuilder sbNoteSql = new StringBuilder();
 		sbNoteSql.append("create table ").append(T_NOTE);
 		sbNoteSql.append("(note_id text primary key, ");
-		sbNoteSql.append(" user_id text, note_content text, ");
+		sbNoteSql.append(" user_id text, note_title text, note_content text, ");
 		//sbNoteSql.append(" modify_time timestamp default CURRENT_TIMESTAMP) ");
 		sbNoteSql.append(" modify_time timestamp default (datetime('now', 'localtime'))) ");
 		db.execSQL(sbNoteSql.toString());

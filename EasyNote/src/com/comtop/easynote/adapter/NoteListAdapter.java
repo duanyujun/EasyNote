@@ -17,10 +17,12 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import com.comtop.easynote.R;
 import com.comtop.easynote.activity.NoteEditActivity;
+import com.comtop.easynote.activity.NoteViewActivity;
 import com.comtop.easynote.dao.NoteDAO;
 import com.comtop.easynote.model.NoteVO;
 import com.comtop.easynote.utils.DatabaseHelper;
 import com.comtop.easynote.utils.DateTimeUtils;
+import com.comtop.easynote.utils.StringUtils;
 
 public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 
@@ -83,9 +85,14 @@ public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 		
 		NoteVO noteVO = list.get(position);
 		final String noteId = noteVO.getNoteId();
-		final String noteContetnt = noteVO.getNoteContent();
+		final String noteTitle = noteVO.getNoteTitle();
+		final String noteContent = noteVO.getNoteContent();
 		holder.noteId.setText(noteId);
-		holder.noteContent.setText(noteContetnt);
+		if(StringUtils.isNotBlank(noteTitle)){
+			holder.noteContent.setText(noteTitle);
+		}else{
+			holder.noteContent.setText(noteContent.replaceAll("\n", ""));
+		}
 		holder.createTime.setText(
 				DateTimeUtils.formatDate(noteVO.getModifyTime(), DateTimeUtils.ISO_DATETIME_FORMAT));
 		holder.noteImage1.setImageDrawable(
@@ -102,9 +109,10 @@ public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 			@Override
 			public void onClick(View v) {
 				Intent objIntent = new Intent();
-				objIntent.setClass(context, NoteEditActivity.class);
+				objIntent.setClass(context, NoteViewActivity.class);
 				objIntent.putExtra("noteId", noteId);
-				objIntent.putExtra("noteContent", noteContetnt);
+				objIntent.putExtra("noteTitle", noteTitle);
+				objIntent.putExtra("noteContent", noteContent);
 				context.startActivity(objIntent);
 			}
 		});
