@@ -2,7 +2,9 @@ package com.comtop.easynote.activity;
 
 import java.util.List;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
@@ -62,6 +64,18 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		listData.clear();
 		listData.addAll(noteDAO.listAllNote()); 
 		adapter.notifyDataSetChanged();
+	}
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			Intent objIntent = new Intent(this, LoginActivity.class);
+			//openActivity(NoteListActivity.class);
+			startActivity(objIntent);
+			//this.overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 	
 }

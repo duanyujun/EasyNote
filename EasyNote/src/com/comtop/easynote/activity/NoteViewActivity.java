@@ -1,7 +1,11 @@
 package com.comtop.easynote.activity;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.widget.TextView;
@@ -18,6 +22,8 @@ public class NoteViewActivity extends BaseActivity {
 	private UnderLineEditText mContent;
 	private TextView mTitle;
 	private String noteId;
+	private String noteTitle;
+	private String noteContent;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -29,11 +35,11 @@ public class NoteViewActivity extends BaseActivity {
 		
 		Intent objIntent = this.getIntent();
 		noteId = objIntent.getStringExtra("noteId");
-		String noteContent = objIntent.getStringExtra("noteContent");
+		noteContent = objIntent.getStringExtra("noteContent");
 		if(StringUtils.isNotBlank(noteContent)){
 			mContent.setText(noteContent);
 		}
-		String noteTitle = objIntent.getStringExtra("noteTitle");
+		noteTitle = objIntent.getStringExtra("noteTitle");
 		if(StringUtils.isNotBlank(noteTitle)){
 			mTitle.setText(noteTitle);
 		}else{
@@ -50,8 +56,26 @@ public class NoteViewActivity extends BaseActivity {
 	}
 	
 	public void editNote(View view){
-		//Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show();
-		openActivity(NoteEditActivity.class);
+		Intent objIntent = new Intent(this, NoteEditActivity.class);
+		objIntent.putExtra("noteId", noteId);
+		objIntent.putExtra("noteTitle", noteTitle);
+		objIntent.putExtra("noteContent", noteContent);
+		startActivity(objIntent);
+		// 画面向左切换效果
+		this.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+	}
+	
+	
+	@Override
+	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			Intent objIntent = new Intent(this, NoteListActivity.class);
+			//openActivity(NoteListActivity.class);
+			startActivity(objIntent);
+			//this.overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
+			return true;
+		}
+		return super.onKeyDown(keyCode, event);
 	}
 	
 	

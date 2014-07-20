@@ -4,9 +4,15 @@
     <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:background="@drawable/navigationbar" android:layout_width="fill_parent" android:layout_height="wrap_content">
         <LinearLayout android:layout_width="fill_parent" android:layout_height="48.0dip" android:orientation="vertical">
             <RelativeLayout android:id="@+id/top_bar" android:layout_width="fill_parent" android:layout_height="fill_parent">
-                <Button android:id="@+id/btnNoteSubmit" android:background="@drawable/nav_save_btn_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8.0dip" android:text="@string/note_edit_save" android:layout_alignParentRight="true" android:layout_centerVertical="true" style="@style/nav_save_btn_title" />
-                <EditText android:id="@+id/iptNoteTitle" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="66.0dip" android:layout_marginRight="2.0dip" android:hint="@string/note_add_title" android:maxLength="100" android:layout_toLeftOf="@id/btnNoteSubmit" android:layout_centerVertical="true" android:imeOptions="actionNext" style="@style/nav_edit_title" />
-                <Button android:id="@+id/btnNoteCancel" android:background="@drawable/nav_normal_btn_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:text="@string/cancel" android:layout_centerVertical="true" style="@style/nav_normal_btn_title" />
+                <Button android:id="@+id/btnNoteSubmit" android:onClick="saveNote" android:background="@drawable/nav_save_btn_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="8.0dip" android:text="@string/note_edit_save" android:layout_alignParentRight="true" android:layout_centerVertical="true" style="@style/nav_save_btn_title" />
+                <TextView 
+		            android:id="@+id/tv_note_id"
+		            android:layout_width="match_parent"
+		            android:layout_height="match_parent"
+		            android:visibility="gone"
+		            />
+                <EditText android:id="@+id/et_title" android:background="@null" android:layout_width="fill_parent" android:layout_height="wrap_content" android:layout_marginLeft="66.0dip" android:layout_marginRight="2.0dip" android:hint="@string/note_add_title" android:maxLength="100" android:layout_toLeftOf="@id/btnNoteSubmit" android:layout_centerVertical="true" android:imeOptions="actionNext" style="@style/nav_edit_title" />
+                <Button android:id="@+id/btnNoteCancel" android:onClick="cancelEdit" android:background="@drawable/nav_normal_btn_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:text="@string/cancel" android:layout_centerVertical="true" style="@style/nav_normal_btn_title" />
             </RelativeLayout>
             <RelativeLayout android:gravity="center_vertical" android:id="@+id/record_layout" android:layout_width="fill_parent" android:layout_height="48.0dip" >
                 <TextView android:id="@+id/record_time" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dip" android:text="00:00" android:layout_centerVertical="true" />
@@ -52,17 +58,20 @@
         android:layout_width="fill_parent" 
         android:layout_height="0.0dip" 
         android:layout_weight="1.0">
-        <EditText 
-            android:id="@+id/iptNoteBody" 
-            android:background="@color/note_view_bg" 
-            android:layout_width="fill_parent" 
-            android:layout_height="fill_parent" 
-            android:layout_marginLeft="1.0dip" 
-            android:layout_marginTop="10.0dip" 
-            android:layout_marginRight="1.0dip" 
-            android:layout_marginBottom="1.0dip"  
-            android:imeOptions="actionDone" 
-            style="@style/note_edit_content" />
+        <com.comtop.easynote.view.UnderLineEditText  
+	         android:id="@+id/et_content"  
+	         android:layout_width="match_parent"  
+	         android:layout_height="match_parent"  
+	         android:textSize="@dimen/note_edit_content_size"  
+	         android:background="@null"  
+	         android:gravity="top"  
+	         android:layout_marginLeft="1.0dip" 
+             android:layout_marginTop="15.0dip" 
+             android:layout_marginRight="1.0dip" 
+             android:layout_marginBottom="1.0dip" 
+	         android:lineSpacingMultiplier="1.3"  
+	         android:inputType="textMultiLine" />  
+        
         <Button 
             android:id="@+id/toggleToolBtn_bg_btn" 
             android:background="@null" 
@@ -87,7 +96,6 @@
             </LinearLayout>
         </LinearLayout>
         <Button 
-            android:text="10"
             android:id="@+id/edit_attach_btn_content" 
             android:layout_width="wrap_content" 
             android:layout_height="wrap_content" 
