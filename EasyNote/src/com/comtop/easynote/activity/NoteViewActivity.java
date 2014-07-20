@@ -51,10 +51,7 @@ public class NoteViewActivity extends BaseActivity {
 	
 	public void editNote(View view){
 		//Toast.makeText(this, "edit", Toast.LENGTH_SHORT).show();
-		mTitle.setFocusableInTouchMode(true);
-		mTitle.requestFocus();
-		mContent.setFocusableInTouchMode(true);
-		mContent.requestFocus();
+		openActivity(NoteEditActivity.class);
 	}
 	
 	
