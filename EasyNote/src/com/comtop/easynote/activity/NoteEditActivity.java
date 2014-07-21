@@ -1,20 +1,14 @@
 package com.comtop.easynote.activity;
 
 import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
 import android.graphics.Bitmap;
-import android.graphics.Bitmap.CompressFormat;
 import android.media.AudioManager;
 import android.media.MediaRecorder;
 import android.net.Uri;
@@ -22,7 +16,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.os.PowerManager;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.view.KeyEvent;
 import android.view.View;
@@ -35,12 +28,12 @@ import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.comtop.common.BaseActivity;
 import com.comtop.common.MyApplication;
 import com.comtop.easynote.R;
 import com.comtop.easynote.constants.Constants;
 import com.comtop.easynote.dao.NoteDAO;
+import com.comtop.easynote.model.FileVO;
 import com.comtop.easynote.model.NoteVO;
 import com.comtop.easynote.utils.DatabaseHelper;
 import com.comtop.easynote.utils.FileUtils;
@@ -106,11 +99,14 @@ public class NoteEditActivity extends BaseActivity {
 	    
 	    noteVO.setNoteTitle(strTitle);
 		noteVO.setNoteContent(strContent);
+		
 		if(StringUtils.isNotBlank(noteId)){
 			noteVO.setNoteId(noteId);
+			setAttachForNote(noteVO);
 			noteDAO.updateNote(noteVO);
 		}else{
 			noteVO.setNoteId(toSaveNoteId);
+			setAttachForNote(noteVO);
 			noteDAO.insertNote(noteVO);
 		}
 		
@@ -121,6 +117,22 @@ public class NoteEditActivity extends BaseActivity {
 		objIntent.putExtra("noteContent", strContent);
 		Toast.makeText(this, "ÒÑ±£´æ", Toast.LENGTH_SHORT).show();
 		startActivity(objIntent);
+	}
+	
+	private void setAttachForNote(NoteVO noteVO){
+	    List<File> listFiles = FileUtils.listFilesInDir(FileUtils.APP_ATTACH_PATH+"/"+noteVO.getNoteId());
+	    for(File file : listFiles){
+	    	FileVO vo = new FileVO();
+	    	vo.setFileId(file.getName());
+	    	vo.setFilePath(file.getAbsolutePath());
+	    	if(file.getName().endsWith(".jpg")){
+	    		vo.setFileType(0);
+	    	}else{
+	    		vo.setFileType(1);
+	    	}
+	    	vo.setNoteId(noteVO.getNoteId());
+	    	noteVO.getListAttachment().add(vo);
+	    }
 	}
 	
 	/**
@@ -409,6 +421,7 @@ public class NoteEditActivity extends BaseActivity {
 	
 	private void toggleRecordAudioAction() {
 		if (this.mMediaRecorder == null) {
+			isChanged = true;
 			this.wl.acquire();
 			//NoteEditActivity.this.
 			NoteEditActivity.this.topBarView.setVisibility(View.GONE);
@@ -549,9 +562,11 @@ public class NoteEditActivity extends BaseActivity {
 			switch(requestCode){
 				case Constants.RESULT_PHOTO:
 					btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
+					isChanged = true;
 					//Toast.makeText(this, "success", Toast.LENGTH_SHORT);
 					break;
 				case Constants.RESULT_IMAGE:
+					isChanged = true;
 					if (data != null) {  
 		                Uri mImageCaptureUri = data.getData();  
 		                if (mImageCaptureUri != null) {  

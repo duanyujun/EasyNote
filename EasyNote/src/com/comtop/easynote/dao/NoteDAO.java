@@ -94,14 +94,8 @@ public class NoteDAO {
 		//删除t_file
 		sbDeleteSql.delete(0, sbDeleteSql.length());
 		for(int i=0; i<noteIds.length; i++){
-			if(i!=0){
-				sbDeleteSql.delete(0, sbDeleteSql.length());
-			}
-			sbDeleteSql.append("delete from ")
-			.append(DatabaseHelper.T_NOTE)
-			.append(" where note_id = '")
-			.append(noteIds[i]).append("'");
-			db.execSQL(sbDeleteSql.toString());
+			String[] args = {noteIds[i]};
+			db.delete(DatabaseHelper.T_FILE, "note_id=?", args);
 		}
 		db.setTransactionSuccessful();
 		db.endTransaction();
@@ -149,6 +143,7 @@ public class NoteDAO {
 	 * 更新笔记
 	 */
 	public int updateNote(NoteVO noteVO){
+		StringBuilder sbFileSql = new StringBuilder();
 		SQLiteDatabase db = helper.getWritableDatabase();
 		ContentValues cv = new ContentValues();
 		cv.put("note_title", noteVO.getNoteTitle());
@@ -158,6 +153,28 @@ public class NoteDAO {
 		String[] args = {noteVO.getNoteId()}; 
 		db.beginTransaction();
 		int iResult = db.update(DatabaseHelper.T_NOTE, cv, "note_id=?", args);
+		
+		//删除该笔记已经存在的文件
+		db.delete(DatabaseHelper.T_FILE, "note_id=?", args);
+		//新增文件
+		//t_file表新增sql
+		if(noteVO.getListAttachment().size()>0){
+			for(int i=0; i<noteVO.getListAttachment().size(); i++){
+				FileVO fileVO = noteVO.getListAttachment().get(i);
+				if(i!=0){
+					sbFileSql.delete(0, sbFileSql.length());
+				}
+				sbFileSql.append(" insert into ").append(DatabaseHelper.T_FILE)
+		  		 .append(" (file_id, note_id, file_path, file_type) values ")
+		         .append(" ('").append(fileVO.getFileId())
+		         .append("','").append(noteVO.getNoteId())
+		         .append("','").append(fileVO.getFilePath())
+		         .append("',").append(fileVO.getFileType())
+		         .append(" )");
+				db.execSQL(sbFileSql.toString());
+			}
+		}
+		
 		db.setTransactionSuccessful();
 		db.endTransaction();
 		db.close();

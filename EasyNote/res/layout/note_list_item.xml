@@ -2,14 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/note_item_height"
-    android:gravity="center_horizontal"
     android:background="@drawable/substation_list_item_selector"
     android:orientation="vertical" >
     
-    <LinearLayout 
+    <RelativeLayout 
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="30dp"
+        android:background="@color/white_color"
         android:orientation="horizontal"
         >
         <TextView 
@@ -20,92 +19,37 @@
             />
         <TextView 
             android:id="@+id/tv_note_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/note_item_margin_left"
-            android:layout_gravity="left|center"
+            android:layout_centerVertical="true" 
             android:textColor="@color/black_color"
             android:textSize="@dimen/note_item_text_size"
             android:singleLine="true"
 			android:ellipsize="end"
             />
-    </LinearLayout>
-    <LinearLayout 
+    </RelativeLayout>
+    <RelativeLayout 
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="30dp"
         android:orientation="horizontal"
         >
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:layout_marginLeft="@dimen/note_item_margin_left"
-            android:textColor="@color/search_hint_gray"
-            android:textSize="@dimen/note_item_date_size"
-            android:text="@string/note_item_create_time"
-            />
         <TextView 
             android:id="@+id/tv_note_create_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
+            android:layout_centerVertical="true" 
+            android:layout_marginLeft="@dimen/note_item_margin_left"
             android:textColor="@color/search_hint_gray"
             android:textSize="@dimen/note_item_date_size"
             />
-    </LinearLayout>
-    <LinearLayout 
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:visibility="gone"
-        >
-		<TextView 
+        <ImageView 
+            android:id="@+id/iv_attach_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="left|center"
-            android:textColor="@color/black_color"
-            android:textSize="@dimen/note_item_text_size"
-            android:text="@string/note_item_image_string"
+            android:layout_centerVertical="true" 
+            android:layout_alignParentRight="true"
+            android:src="@drawable/attach_list"
             />
-		<ImageView 
-		    android:id="@+id/imv_note_image1"
-		    android:layout_width="@dimen/note_item_image_width"
-		    android:layout_height="@dimen/note_item_image_height"
-		    android:src="@drawable/image_1"
-		    />
-		 <TextView 
-                android:layout_width="8dp"
-                android:layout_height="fill_parent"
-                android:background="@color/white_color"
-                />
-		<ImageView 
-		    android:id="@+id/imv_note_image2"
-		    android:layout_width="@dimen/note_item_image_width"
-		    android:layout_height="@dimen/note_item_image_height"
-		    android:src="@drawable/image_2"
-		    />
-		<TextView 
-                android:layout_width="8dp"
-                android:layout_height="fill_parent"
-                android:background="@color/white_color"
-                />
-		<ImageView 
-		    android:id="@+id/imv_note_image3"
-		    android:layout_width="@dimen/note_item_image_width"
-		    android:layout_height="@dimen/note_item_image_height"
-		    android:src="@drawable/image_3"
-		    />
-		<TextView 
-                android:layout_width="8dp"
-                android:layout_height="fill_parent"
-                android:background="@color/white_color"
-                />
-		<ImageView 
-		    android:id="@+id/imv_note_image4"
-		    android:layout_width="@dimen/note_item_image_width"
-		    android:layout_height="@dimen/note_item_image_height"
-		    android:src="@drawable/image_4"
-		    />
-    </LinearLayout>
+    </RelativeLayout>
 </LinearLayout>
