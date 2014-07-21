@@ -276,6 +276,11 @@ public class NoteEditActivity extends BaseActivity {
 		finishRecordButton.setOnClickListener(clickListener);
 		btnAttachment.setOnClickListener(clickListener);
 		
+	}
+	
+	@Override
+	protected void onResume() {
+		super.onResume();
 		btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
 	}
 	

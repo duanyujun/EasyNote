@@ -6,22 +6,27 @@ import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.webkit.MimeTypeMap;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.comtop.easynote.R;
+import com.comtop.easynote.constants.Constants;
 import com.comtop.easynote.dao.NoteDAO;
 import com.comtop.easynote.utils.DatabaseHelper;
 import com.comtop.easynote.utils.FileSizeUtil;
+import com.comtop.easynote.utils.StringUtils;
 
 public class AttachListAdapter extends BaseAdapter implements OnLongClickListener{
 
@@ -73,8 +78,7 @@ public class AttachListAdapter extends BaseAdapter implements OnLongClickListene
 			holder = (ViewHolder) convertView.getTag();
 		}
 		
-		File file = list.get(position);
-		String imagePath = null;
+		final File file = list.get(position);
 		if(file.getName().endsWith(".jpg")){
 			Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 			holder.attachImage.setImageBitmap(bitmap);
@@ -94,13 +98,18 @@ public class AttachListAdapter extends BaseAdapter implements OnLongClickListene
 		convertView.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				Toast.makeText(context, "click", Toast.LENGTH_SHORT);
-//				Intent objIntent = new Intent();
-//				objIntent.setClass(context, NoteViewActivity.class);
-//				objIntent.putExtra("noteId", noteId);
-//				objIntent.putExtra("noteTitle", noteTitle);
-//				objIntent.putExtra("noteContent", noteContent);
-//				context.startActivity(objIntent);
+				//Toast.makeText(context, "click", Toast.LENGTH_SHORT).show();
+				Uri localUri = Uri.fromFile(file);
+			    int i = strAttachTitle.lastIndexOf(".");
+			    String strFileType = strAttachTitle.substring(i+1);
+			    String strMimeType = Constants.nameAndMine.get(strFileType.toLowerCase());
+			    if(StringUtils.isBlank(strMimeType)){
+			    	strMimeType = MimeTypeMap.getSingleton().getMimeTypeFromExtension(strFileType.toLowerCase());
+			    }
+			    Intent localIntent = new Intent("android.intent.action.VIEW");
+		        localIntent.putExtra("NoNeedEditOperation", true);
+		        localIntent.setDataAndType(localUri, strMimeType);
+		        context.startActivity(localIntent);
 			}
 		});
 		
@@ -112,15 +121,15 @@ public class AttachListAdapter extends BaseAdapter implements OnLongClickListene
 		AlertDialog.Builder builder = new Builder(context);
 		builder.setMessage("确认删除吗？");
 		builder.setTitle("提示");
-		final String noteId = ((TextView) v.findViewById(R.id.tv_note_id)).getText()
-				.toString();
-		DatabaseHelper dbHelper = new DatabaseHelper(context, DatabaseHelper.DB_NAME, DatabaseHelper.DB_VERSION);
-		final NoteDAO noteDAO = new NoteDAO(dbHelper);
+		final String strFileAbsPath = ((TextView)v.findViewById(R.id.attach_abs_path)).getText().toString();
 		builder.setPositiveButton("确认",
 				new android.content.DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						noteDAO.deleteNote(new String[]{noteId});
+						File file = new File(strFileAbsPath);
+						if(file.exists()){
+							file.delete();
+						}
 						onLongClickListener.onLongClickRefresh();			
 						dialog.dismiss();
 					}

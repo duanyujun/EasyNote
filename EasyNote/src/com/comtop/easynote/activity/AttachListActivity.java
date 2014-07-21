@@ -5,13 +5,14 @@ import java.util.List;
 import com.comtop.common.BaseActivity;
 import com.comtop.easynote.R;
 import com.comtop.easynote.adapter.AttachListAdapter;
+import com.comtop.easynote.adapter.AttachListAdapter.OnLongClickListener;
 import com.comtop.easynote.utils.FileUtils;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ListView;
 
-public class AttachListActivity extends BaseActivity {
+public class AttachListActivity extends BaseActivity implements OnLongClickListener{
 
 	private List<File> listData;
 	private String noteId;
@@ -46,6 +47,7 @@ public class AttachListActivity extends BaseActivity {
 	private void refresh(){
 		listData = FileUtils.listFilesInDir(attachFilePath);
 		adapter = new AttachListAdapter(this, listData, true);
+		adapter.setOnLongClickListener(this);
 		listView.setAdapter(adapter);
 		if(listData.size()==0){
 			listView.setEmptyView(viewEmpty);
@@ -58,11 +60,28 @@ public class AttachListActivity extends BaseActivity {
 	}
 	
 	@Override
+	public void onLongClickRefresh() {
+		listData.clear();
+		List<File> tempFiles = FileUtils.listFilesInDir(attachFilePath);
+		if(tempFiles.size()==0){
+			listView.setEmptyView(viewEmpty);
+		}
+		viewLoading.setVisibility(View.GONE);
+		listData.addAll(tempFiles); 
+		adapter.notifyDataSetChanged();
+	}
+	
+	@Override
 	protected void onResume() {
 		super.onResume();
 		if(!isFirstRun){
 			listData.clear();
-			listData.addAll(FileUtils.listFilesInDir(attachFilePath)); 
+			List<File> tempFiles = FileUtils.listFilesInDir(attachFilePath);
+			if(tempFiles.size()==0){
+				listView.setEmptyView(viewEmpty);
+			}
+			viewLoading.setVisibility(View.GONE);
+			listData.addAll(tempFiles); 
 			adapter.notifyDataSetChanged();
 		}else{
 			refresh();
