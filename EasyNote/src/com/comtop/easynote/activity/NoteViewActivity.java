@@ -66,18 +66,20 @@ public class NoteViewActivity extends BaseActivity {
 	}
 	
 	public void back(View view){
-		finish();
+		Intent objIntent = new Intent(this, NoteListActivity.class);
+		startActivity(objIntent);
+		//finish();
 	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_BACK){
-			Intent objIntent = new Intent(this, NoteListActivity.class);
-			//openActivity(NoteListActivity.class);
-			startActivity(objIntent);
-			//this.overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
-			return true;
-		}
+//		if(keyCode == KeyEvent.KEYCODE_BACK){
+//			Intent objIntent = new Intent(this, NoteListActivity.class);
+//			//openActivity(NoteListActivity.class);
+//			startActivity(objIntent);
+//			//this.overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
+//			return true;
+//		}
 		return super.onKeyDown(keyCode, event);
 	}
 	

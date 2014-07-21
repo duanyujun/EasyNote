@@ -81,13 +81,13 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_BACK){
-			Intent objIntent = new Intent(this, LoginActivity.class);
-			//openActivity(NoteListActivity.class);
-			startActivity(objIntent);
-			//this.overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
-			return true;
-		}
+//		if(keyCode == KeyEvent.KEYCODE_BACK){
+//			Intent objIntent = new Intent(this, LoginActivity.class);
+//			//openActivity(NoteListActivity.class);
+//			startActivity(objIntent);
+//			//this.overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
+//			return true;
+//		}
 		return super.onKeyDown(keyCode, event);
 	}
 	

@@ -88,10 +88,10 @@ public class LoginActivity extends BaseActivity {
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-		if(keyCode == KeyEvent.KEYCODE_BACK){
-			android.os.Process.killProcess(android.os.Process.myPid());
-			return true;
-		}
+//		if(keyCode == KeyEvent.KEYCODE_BACK){
+//			android.os.Process.killProcess(android.os.Process.myPid());
+//			return true;
+//		}
 		return super.onKeyDown(keyCode, event);
 	}
 	
