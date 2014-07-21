@@ -65,6 +65,9 @@ public class NoteViewActivity extends BaseActivity {
 		this.overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
 	}
 	
+	public void back(View view){
+		finish();
+	}
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {

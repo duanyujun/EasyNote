@@ -79,7 +79,6 @@ public class NoteEditActivity extends BaseActivity {
 		ibToggleTool.setBackgroundDrawable(getResources().getDrawable(R.drawable.newdoc_ancor_up));
 		mContent = (UnderLineEditText)findViewById(R.id.et_content);
 		mTitle = (EditText)findViewById(R.id.et_title);
-		btnAttachment = (Button)findViewById(R.id.edit_attach_btn_content);
 		
 		wl = ((PowerManager)getSystemService("power")).newWakeLock(6, "comtop");
 	    am = ((AudioManager)getSystemService("audio"));
@@ -207,11 +206,14 @@ public class NoteEditActivity extends BaseActivity {
 			this.mMediaRecorder = null;
 			if (!isFinishing()) {
 				this.recordTimeText.setText("00:00");
-				this.topBarView.setLayoutParams(new LinearLayout.LayoutParams(
-						-1, -1));
+				this.topBarView.setVisibility(View.INVISIBLE);
+//				this.topBarView.setLayoutParams(new LinearLayout.LayoutParams(
+//						-1, -1));
 			}
 			this.isRecording = false;
-			this.wl.release();
+			if(this.wl.isHeld()){
+				this.wl.release();
+			}
 			this.am.abandonAudioFocus(this.afChangeListener);
 			
 		}
@@ -265,13 +267,14 @@ public class NoteEditActivity extends BaseActivity {
 		volumBar = (ProgressBar)findViewById(R.id.recordVolume);
 		topBarView = findViewById(R.id.top_bar);
 		finishRecordButton = ((Button)findViewById(R.id.btnRecordFinish));
+		btnAttachment = (Button)findViewById(R.id.edit_attach_btn_content);
 		
 		btnCamera.setOnClickListener(clickListener);
 		btnStt.setOnClickListener(clickListener);
 		audioBtn.setOnClickListener(clickListener);
 		btnImage.setOnClickListener(clickListener);
 		finishRecordButton.setOnClickListener(clickListener);
-		
+		btnAttachment.setOnClickListener(clickListener);
 		
 		btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
 	}
@@ -316,6 +319,13 @@ public class NoteEditActivity extends BaseActivity {
 			case R.id.btnRecordFinish:
 				NoteEditActivity.this.audioBtn.setEnabled(true);
 			    NoteEditActivity.this.toggleRecordAudioAction();
+			    break;
+			case R.id.edit_attach_btn_content:
+				Intent objIntent = new Intent(NoteEditActivity.this, AttachListActivity.class);
+				objIntent.putExtra("noteId", noteId);
+				objIntent.putExtra("toSaveNoteId", toSaveNoteId);
+				NoteEditActivity.this.startActivity(objIntent);
+				break;
 			default:
 				break;
 			}

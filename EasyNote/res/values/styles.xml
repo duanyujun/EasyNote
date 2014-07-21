@@ -63,5 +63,48 @@
         <item name="android:layout_alignParentRight">true</item>
         <item name="android:layout_alignParentBottom">true</item>
     </style>
+    
+    <style name="nav_header_titile">
+        <item name="android:textSize">22.0sp</item>
+        <item name="android:textColor">#ff646464</item>
+        <item name="android:maxWidth">200.0dip</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:shadowColor">#ffffffff</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">2.0</item>
+        <item name="android:shadowRadius">3.0</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+    
+    <style name="loadTxt">
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="emptyTxt">
+        <item name="android:gravity">center</item>
+    </style>
+    
+    <style name="note_list_title">
+        <item name="android:textSize">14.0sp</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#ff535353</item>
+        <item name="android:layout_marginLeft">10.0dip</item>
+        <item name="android:layout_marginTop">8.0dip</item>
+        <item name="android:singleLine">true</item>
+        <item name="android:shadowColor">#ffffffff</item>
+        <item name="android:shadowDx">0.0</item>
+        <item name="android:shadowDy">2.0</item>
+        <item name="android:shadowRadius">3.0</item>
+        <item name="android:layout_alignParentLeft">true</item>
+    </style>
+    
+    <style name="note_list_abstract">
+        <item name="android:textSize">11.0sp</item>
+        <item name="android:textColor">#ff999999</item>
+        <item name="android:layout_marginLeft">14.0dip</item>
+        <item name="android:layout_marginTop">3.0dip</item>
+        <item name="android:layout_marginRight">8.0dip</item>
+        <item name="android:maxLines">3</item>
+    </style>
 
 </resources>

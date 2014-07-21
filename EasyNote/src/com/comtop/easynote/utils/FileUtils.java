@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -57,6 +59,18 @@ public class FileUtils {
 		}else{
 			return 0;
 		}
+	}
+	
+	public static List<File> listFilesInDir(String filepath){
+		List<File> listFile = new ArrayList<File>();
+		File file = new File(filepath);
+		if(file.exists()){
+			File[] files = file.listFiles();
+			for(File temp : files){
+				listFile.add(temp);
+			}
+		}
+		return listFile;
 	}
 	
 	/**

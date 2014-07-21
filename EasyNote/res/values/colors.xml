@@ -12,4 +12,5 @@
   <color name="green_color">#FF00FF00</color>
   <color name="yellow_color">#FF0000FF</color>
   <color name="note_view_bg">#fff4f4f4</color>
+  <color name="list_select_drawable">#fff39948</color>
 </resources>

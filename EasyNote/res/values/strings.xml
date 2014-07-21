@@ -31,4 +31,11 @@
 	<string name="intent_no_camera">没有找到摄像头</string>
 	<string name="timer_format">%1$02d:%2$02d</string>
 	
+	<!-- 附件列表页面 -->
+	<string name="rc_back">返回</string>
+	<string name="back">"  返回"</string>
+	<string name="attachlist_title_plant">附件列表</string>
+	<string name="loading">载入中...</string>
+	<string name="empty_attach">您的笔记中没有附件</string>
+	
 </resources>
