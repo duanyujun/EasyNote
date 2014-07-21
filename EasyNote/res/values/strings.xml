@@ -9,6 +9,8 @@
 	<!-- 列表页面 -->
 	<string name="note_item_create_time">修改时间：</string>
 	<string name="note_item_image_string">图片：</string>
+	<string name="note_search_hint_string">搜索笔记</string>
+	
 	
 	<!-- 笔记编辑页面 -->
 	<string name="note_edit_title_hint">标题...</string>

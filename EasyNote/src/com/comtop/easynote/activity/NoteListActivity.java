@@ -2,14 +2,16 @@ package com.comtop.easynote.activity;
 
 import java.util.List;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
-
 import com.comtop.common.BaseActivity;
 import com.comtop.easynote.R;
 import com.comtop.easynote.adapter.NoteListAdapter;
@@ -25,6 +27,10 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 	private NoteDAO noteDAO;
 	private List<NoteVO> listData;
 	private boolean isFirstRun = true;
+	private LinearLayout searchLayout;
+	private LinearLayout normalLayout;
+	private ImageView ivSearch;
+	private Button btnNoteCancel;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +50,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		lvNote.setAdapter(adapter);
 		
 		initSdDir();
+		initSearch();
 	}
 	
 	private void initSdDir(){
@@ -54,6 +61,27 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		if (!FileUtils.checkFileExists(FileUtils.APP_ATTACH_PATH)) {
 			FileUtils.createDIR(FileUtils.APP_ATTACH_PATH);
 		}
+	}
+	
+	private void initSearch(){
+		searchLayout = (LinearLayout) findViewById(R.id.searchLayout);
+		normalLayout = (LinearLayout) findViewById(R.id.normalLayout);
+		ivSearch = (ImageView) findViewById(R.id.search_btn_img);
+		btnNoteCancel = (Button)findViewById(R.id.btnNoteCancel);
+		ivSearch.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				searchLayout.setVisibility(View.VISIBLE);
+				normalLayout.setVisibility(View.GONE);
+			}
+		});
+		btnNoteCancel.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				searchLayout.setVisibility(View.GONE);
+				normalLayout.setVisibility(View.VISIBLE);
+			}
+		});
 	}
 	
 	@Override
