@@ -34,6 +34,7 @@ public class SearchBoxAdapter extends BaseAdapter implements Filterable{
 	private List<String> mOriginalIds;//所有的id
 	private List<String> mOriginalValues;//所有的Item
 	private List<String> mObjects = new ArrayList<String>();//过滤后的item
+	private List<String> mNoteContents = new ArrayList<String>();
 	private List<String> mIds;//过滤后的item id
 	private final Object mLock = new Object();
 	private int maxMatch=100;//最多显示多少个选项,负数表示全部
@@ -80,10 +81,12 @@ public class SearchBoxAdapter extends BaseAdapter implements Filterable{
                 	
                 	final String id = mOriginalIds!=null?mOriginalIds.get(i):"";
                     final String value = mOriginalValues.get(i);  
-                    final String valueText = value.toLowerCase();  
+                    final String valueText = value.toLowerCase();
+                    final String noteContent = mNoteContents.get(i);
   
                     // First match against the whole, non-splitted value  
-                    if (valueText.contains(prefixString)) {  //源码 ,匹配开头
+                    if (valueText.contains(prefixString)
+                    		|| noteContent.contains(prefixString)) {  //源码 ,匹配开头
                     	if(mOriginalIds!=null){
                     		newIds.add(id);
                     	}
@@ -212,6 +215,14 @@ public class SearchBoxAdapter extends BaseAdapter implements Filterable{
 		return mOriginalValues;
 	}
 	
+	public List<String> getmNoteContents() {
+		return mNoteContents;
+	}
+
+	public void setmNoteContents(List<String> mNoteContents) {
+		this.mNoteContents = mNoteContents;
+	}
+
 	public void addMyHintItemOnClickListener(MyHintItemOnClickListener listner){
 		this.myHintOnClickListner = listner;
 	}

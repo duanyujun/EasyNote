@@ -1,5 +1,6 @@
 package com.comtop.easynote.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.os.Bundle;
@@ -12,6 +13,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
+
 import com.comtop.common.BaseActivity;
 import com.comtop.easynote.R;
 import com.comtop.easynote.adapter.NoteListAdapter;
@@ -19,6 +22,11 @@ import com.comtop.easynote.dao.NoteDAO;
 import com.comtop.easynote.model.NoteVO;
 import com.comtop.easynote.utils.DatabaseHelper;
 import com.comtop.easynote.utils.FileUtils;
+import com.comtop.easynote.utils.StringUtils;
+import com.comtop.easynote.view.SearchBoxLite;
+import com.comtop.easynote.view.SearchBoxLite.HintDataProvider;
+import com.comtop.easynote.view.SearchBoxLite.HintItemOnClickListener;
+import com.comtop.easynote.view.SearchBoxLite.SearchButtonOnClickListener;
 
 public class NoteListActivity extends BaseActivity implements com.comtop.easynote.adapter.NoteListAdapter.OnLongClickListener{
 
@@ -31,6 +39,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 	private LinearLayout normalLayout;
 	private ImageView ivSearch;
 	private Button btnNoteCancel;
+	private SearchBoxLite searchBoxLite;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +77,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		normalLayout = (LinearLayout) findViewById(R.id.normalLayout);
 		ivSearch = (ImageView) findViewById(R.id.search_btn_img);
 		btnNoteCancel = (Button)findViewById(R.id.btnNoteCancel);
+		searchBoxLite = (SearchBoxLite)findViewById(R.id.searchBox);
 		ivSearch.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -80,6 +90,42 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 			public void onClick(View v) {
 				searchLayout.setVisibility(View.GONE);
 				normalLayout.setVisibility(View.VISIBLE);
+			}
+		});
+		
+		//增加提示数据接口
+		searchBoxLite.addHintDataProvider(new HintDataProvider() {
+			@Override
+			public void loadHintData(String s) {
+				loadLocalHintData(s);
+			}
+		});
+		
+		//增加提示数据item点击事件接口
+		searchBoxLite.addHintItemOnClickListener(new HintItemOnClickListener() {
+			@Override
+			public void onClick(View v) {
+				TextView strTvId = (TextView)v.findViewById(R.id.auto_text_id); 
+				String noteId = strTvId.getText().toString();
+				listData.clear();
+				listData.addAll(noteDAO.searchNoteById(noteId)); 
+				adapter.notifyDataSetChanged();
+			}
+		});
+		//增加搜索按钮点击事件接口
+		searchBoxLite.addSearchButtonOnClickListener(new SearchButtonOnClickListener() {
+			@Override
+			public void onClick(View v) {
+				String input = searchBoxLite.getSearchString();
+				if(StringUtils.isBlank(input)){
+					listData.clear();
+					listData.addAll(noteDAO.listAllNote()); 
+					adapter.notifyDataSetChanged();
+				}else{
+					listData.clear();
+					listData.addAll(noteDAO.searchNoteList(input)); 
+					adapter.notifyDataSetChanged();
+				}
 			}
 		});
 	}
@@ -105,6 +151,24 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		listData.clear();
 		listData.addAll(noteDAO.listAllNote()); 
 		adapter.notifyDataSetChanged();
+	}
+	
+	/**
+	 * 加载搜索的文字
+	 * @param s
+	 */
+	private void loadLocalHintData(String input){
+		List<NoteVO> lstItemVO = noteDAO.searchNoteList(input);
+		//id列表
+		List<String> lstHintId = new ArrayList<String>();
+		List<String> lstHintString = new ArrayList<String>();
+		List<String> lstNoteContentString = new ArrayList<String>();
+		for(NoteVO vo : lstItemVO){
+			lstHintId.add(vo.getNoteId());
+			lstHintString.add(vo.getNoteTitle());
+			lstNoteContentString.add(vo.getNoteContent());
+		}
+		searchBoxLite.refreshHintList(lstHintString, lstHintId, lstNoteContentString);
 	}
 	
 	@Override

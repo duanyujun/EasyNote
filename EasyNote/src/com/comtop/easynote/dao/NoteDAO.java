@@ -13,6 +13,7 @@ import com.comtop.easynote.model.FileVO;
 import com.comtop.easynote.model.NoteVO;
 import com.comtop.easynote.utils.DatabaseHelper;
 import com.comtop.easynote.utils.DateTimeUtils;
+import com.comtop.easynote.utils.StringUtils;
 
 public class NoteDAO {
 	
@@ -217,6 +218,75 @@ public class NoteDAO {
 				fileVO.setFileType(cursor.getInt(3));
 				noteVO.getListAttachment().add(fileVO);
 			}
+		}
+		
+		db.close(); 
+		return lstNote;
+	}
+	
+	/**
+	 * 查询全部笔记
+	 * @param input 搜索字符
+	 * @return NoteVO集合
+	 */
+	public List<NoteVO> searchNoteList(String input){
+		List<NoteVO> lstNote = new ArrayList<NoteVO>();
+		StringBuilder sbReadSql = new StringBuilder();
+		SQLiteDatabase db = helper.getReadableDatabase();
+		sbReadSql.append(" select * from ").append(DatabaseHelper.T_NOTE)
+				 .append(" where note_title like '%").append(input).append("%'")
+				 .append(" or (note_content like '%").append(input).append("%') ");
+		Cursor cursor = db.rawQuery(sbReadSql.toString(), null);
+		String strNoteTitle;
+		String strNoteContent;
+		while(cursor.moveToNext()){
+			NoteVO noteVO = new NoteVO();
+			noteVO.setNoteId(cursor.getString(0));
+			noteVO.setUserId(cursor.getString(1));
+			strNoteTitle = cursor.getString(2);
+			strNoteContent = cursor.getString(3);
+			if(StringUtils.isBlank(strNoteTitle)){
+				noteVO.setNoteTitle(strNoteContent);
+			}else{
+				noteVO.setNoteTitle(strNoteTitle);
+			}
+			noteVO.setNoteContent(strNoteContent);
+			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			lstNote.add(noteVO);
+		}
+		
+		db.close(); 
+		return lstNote;
+	}
+	
+	/**
+	 * 通过NoteId查询笔记
+	 * @param input 搜索字符
+	 * @return NoteVO集合
+	 */
+	public List<NoteVO> searchNoteById(String noteId){
+		List<NoteVO> lstNote = new ArrayList<NoteVO>();
+		StringBuilder sbReadSql = new StringBuilder();
+		SQLiteDatabase db = helper.getReadableDatabase();
+		sbReadSql.append(" select * from ").append(DatabaseHelper.T_NOTE)
+				 .append(" where note_id = '").append(noteId).append("'");
+		Cursor cursor = db.rawQuery(sbReadSql.toString(), null);
+		String strNoteTitle;
+		String strNoteContent;
+		while(cursor.moveToNext()){
+			NoteVO noteVO = new NoteVO();
+			noteVO.setNoteId(cursor.getString(0));
+			noteVO.setUserId(cursor.getString(1));
+			strNoteTitle = cursor.getString(2);
+			strNoteContent = cursor.getString(3);
+			if(StringUtils.isBlank(strNoteTitle)){
+				noteVO.setNoteTitle(strNoteContent);
+			}else{
+				noteVO.setNoteTitle(strNoteTitle);
+			}
+			noteVO.setNoteContent(strNoteContent);
+			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			lstNote.add(noteVO);
 		}
 		
 		db.close(); 

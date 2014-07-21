@@ -58,6 +58,9 @@ public class SearchBoxLite extends LinearLayout {
 	/** 自动提示数据 */
 	private List<String> mOriginalValues
 		=new ArrayList<String>(0);
+	private List<String> mNoteContent
+		= new ArrayList<String>(0);
+	
 	
 	public SearchBoxLite(Context context) {
 		super(context);
@@ -166,11 +169,14 @@ public class SearchBoxLite extends LinearLayout {
 	 * @param listHintId 提示名称对应的Id集合
 	 */
 	public void refreshHintList(List<String> listHintString,
-			List<String> listHintId){
+			List<String> listHintId, List<String> listNoteContent){
 		mOriginalValues.clear();
 		mOriginalValues.addAll(listHintString);
 		mAdapter.getmObjects().clear();
 		mAdapter.getmObjects().addAll(listHintString);
+		//添加note 内容
+		mAdapter.getmNoteContents().clear();
+		mAdapter.getmNoteContents().addAll(listNoteContent);
 		mAdapter.setmOriginalIds(listHintId);
 		mAdapter.setmIds(listHintId);
 		mAdapter.notifyDataSetChanged();
@@ -232,7 +238,15 @@ public class SearchBoxLite extends LinearLayout {
     	this.mySearchButtonOnClickListener = listener;
     }
     
-    /**
+    public List<String> getmNoteContent() {
+		return mNoteContent;
+	}
+
+	public void setmNoteContent(List<String> mNoteContent) {
+		this.mNoteContent = mNoteContent;
+	}
+
+	/**
      * 外部可以拿到搜索框中的内容
      * @return String 
      */
