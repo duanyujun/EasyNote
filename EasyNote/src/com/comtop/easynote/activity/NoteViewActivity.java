@@ -91,7 +91,10 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 		adapter.setOnLongClickListener(this);
 		listView.setAdapter(adapter);
 		if(listData.size()==0){
-			listView.setEmptyView(viewEmpty);
+			//listView.setEmptyView(viewEmpty);
+			listView.setVisibility(View.GONE);
+		}else{
+			listView.setVisibility(View.VISIBLE);
 		}
 		viewLoading.setVisibility(View.GONE);
 	}
@@ -104,7 +107,10 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 			List<File> tempFiles = FileUtils.listFilesInDirByType(attachFilePath);
 			
 			if(tempFiles.size()==0){
-				listView.setEmptyView(viewEmpty);
+				//listView.setEmptyView(viewEmpty);
+				listView.setVisibility(View.GONE);
+			}else{
+				listView.setVisibility(View.VISIBLE);
 			}
 			
 			viewLoading.setVisibility(View.GONE);
@@ -134,13 +140,14 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
-//		if(keyCode == KeyEvent.KEYCODE_BACK){
-//			Intent objIntent = new Intent(this, NoteListActivity.class);
-//			//openActivity(NoteListActivity.class);
-//			startActivity(objIntent);
-//			//this.overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
-//			return true;
-//		}
+		if(keyCode == KeyEvent.KEYCODE_BACK){
+			Intent objIntent = new Intent(this, NoteListActivity.class);
+			//openActivity(NoteListActivity.class);
+			startActivity(objIntent);
+			//this.overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
+			finish();
+			return true;
+		}
 		return super.onKeyDown(keyCode, event);
 	}
 
@@ -149,7 +156,10 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 		listData.clear();
 		List<File> tempFiles = FileUtils.listFilesInDirByType(attachFilePath);
 		if(tempFiles.size()==0){
-			listView.setEmptyView(viewEmpty);
+			//listView.setEmptyView(viewEmpty);
+			listView.setVisibility(View.GONE);
+		}else{
+			listView.setVisibility(View.VISIBLE);
 		}
 		viewLoading.setVisibility(View.GONE);
 		listData.addAll(tempFiles); 

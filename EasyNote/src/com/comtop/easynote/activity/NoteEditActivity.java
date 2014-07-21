@@ -112,7 +112,12 @@ public class NoteEditActivity extends BaseActivity {
 		
 		Intent objIntent = new Intent();
 		objIntent.setClass(this, NoteViewActivity.class);
-		objIntent.putExtra("noteId", noteId);
+		if(StringUtils.isNotBlank(noteId)){
+			objIntent.putExtra("noteId", noteId);
+		}else{
+			objIntent.putExtra("noteId", toSaveNoteId);
+		}
+		
 		objIntent.putExtra("noteTitle", strTitle);
 		objIntent.putExtra("noteContent", strContent);
 		Toast.makeText(this, "ÒÑ±£´æ", Toast.LENGTH_SHORT).show();

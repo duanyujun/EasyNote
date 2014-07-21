@@ -91,6 +91,8 @@ public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 				DateTimeUtils.formatDate(noteVO.getModifyTime(), DateTimeUtils.ISO_DATETIME_FORMAT));
 		if(noteVO.getListAttachment().size()==0){
 			holder.attachImageView.setVisibility(View.GONE);
+		}else{
+			holder.attachImageView.setVisibility(View.VISIBLE);
 		}
 		
 		convertView.setOnLongClickListener(this);
