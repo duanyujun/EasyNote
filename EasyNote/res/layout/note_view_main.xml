@@ -74,13 +74,20 @@
             />
     </LinearLayout>
     <ScrollView 
+        android:id="@+id/sv_content"
 		android:layout_width="fill_parent" 
 		android:background="@color/white_color"
 		android:layout_height="wrap_content" 
 		android:layout_marginTop="3dp"
 		android:scrollbars="none"
 		android:orientation="vertical">
-        <com.comtop.easynote.view.UnderLineEditText  
+        <LinearLayout 
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            >
+            
+            <com.comtop.easynote.view.UnderLineEditText  
 	         android:id="@+id/et_content"  
 	         android:layout_width="match_parent"  
 	         android:layout_height="wrap_content"  
@@ -93,6 +100,33 @@
 	         android:background="@null"  
 	         android:gravity="top"  
 	         android:lineSpacingMultiplier="1.3"  
-	         android:inputType="textMultiLine" />  
+	         android:inputType="textMultiLine" /> 
+	    	
+	        <FrameLayout android:layout_width="fill_parent"
+	            android:layout_height="wrap_content"
+	            >
+		        <LinearLayout android:orientation="vertical" android:layout_width="wrap_content" android:layout_height="wrap_content">
+		            <com.comtop.easynote.view.ListViewForScrollView 
+		                android:id="@android:id/list" 
+		                android:fadingEdge="none" 
+		                android:layout_width="fill_parent" 
+		                android:layout_height="fill_parent" 
+		                android:smoothScrollbar="true" />
+		            <LinearLayout 
+		                android:id="@+id/footview" 
+		                android:background="@drawable/login_paper" 
+		                android:layout_width="fill_parent" 
+		                android:layout_height="wrap_content" 
+		                android:orientation="vertical"
+		                />
+		        </LinearLayout>
+		        <LinearLayout android:layout_gravity="center" android:id="@+id/load" android:layout_width="wrap_content" android:layout_height="wrap_content">
+		            <ProgressBar android:layout_width="wrap_content" android:layout_height="wrap_content" style="?android:attr/progressBarStyleSmall" />
+		            <TextView android:layout_width="fill_parent" android:layout_height="fill_parent" android:layout_marginLeft="5.0dip" android:text="@string/loading" style="@style/loadTxt" />
+		        </LinearLayout>
+		        <TextView android:id="@+id/empty" android:visibility="gone" android:layout_width="fill_parent" android:layout_height="fill_parent" android:text="@string/empty_attach" style="@style/emptyTxt" />
+		    </FrameLayout>
+            
+        </LinearLayout>
     </ScrollView>
 </LinearLayout>

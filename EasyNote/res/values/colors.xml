@@ -5,6 +5,7 @@
   <color name="light_blue_color">#FF4BB2EC</color>
   <color name="white_color">#FFFFFFFF</color>
   <color name="black_color">#FF000000</color>
+  <color name="view_content_gray">#FF555555</color>
   <color name="search_hint_gray">#FFAAAAAA</color>
   <color name="back_light_gray">#FFF0F0F0</color>
   <color name="split_gray">#FFDEDEDE</color>

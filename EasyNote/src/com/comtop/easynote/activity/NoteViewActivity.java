@@ -1,5 +1,8 @@
 package com.comtop.easynote.activity;
 
+import java.io.File;
+import java.util.List;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
@@ -8,15 +11,21 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.comtop.common.BaseActivity;
 import com.comtop.easynote.R;
+import com.comtop.easynote.adapter.AttachListAdapter;
+import com.comtop.easynote.adapter.ViewListAdapter;
+import com.comtop.easynote.adapter.ViewListAdapter.OnLongClickListener;
 import com.comtop.easynote.constants.Constants;
+import com.comtop.easynote.utils.FileUtils;
 import com.comtop.easynote.utils.StringUtils;
 import com.comtop.easynote.view.UnderLineEditText;
 
-public class NoteViewActivity extends BaseActivity {
+public class NoteViewActivity extends BaseActivity implements OnLongClickListener{
 	
 	private TextView mNoteId;
 	private UnderLineEditText mContent;
@@ -24,6 +33,13 @@ public class NoteViewActivity extends BaseActivity {
 	private String noteId;
 	private String noteTitle;
 	private String noteContent;
+	private ViewListAdapter adapter;
+	private List<File> listData;
+	private ListView listView;
+	private boolean isFirstRun = true;
+	private String attachFilePath;
+	private View viewEmpty;
+	private View viewLoading;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +69,47 @@ public class NoteViewActivity extends BaseActivity {
 			mContent.clearFocus();
 		}
 		
+		attachFilePath = FileUtils.APP_ATTACH_PATH + "/" + noteId;
+		
+		ScrollView svContent = (ScrollView) findViewById(R.id.sv_content);
+		svContent.smoothScrollTo(0, 0);
+		initView();
+	}
+	
+	private void initView(){
+		viewLoading = findViewById(R.id.load);
+		viewEmpty = findViewById(R.id.empty);
+		listView = (ListView) findViewById(android.R.id.list);
+		listView.setDivider(null);
+		listView.setEmptyView(viewLoading);
+	}
+	
+	private void refresh(){
+		listData = FileUtils.listFilesInDir(attachFilePath);
+		adapter = new ViewListAdapter(this, listData);
+		adapter.setOnLongClickListener(this);
+		listView.setAdapter(adapter);
+		if(listData.size()==0){
+			listView.setEmptyView(viewEmpty);
+		}
+		viewLoading.setVisibility(View.GONE);
+	}
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if(!isFirstRun){
+			listData.clear();
+			List<File> tempFiles = FileUtils.listFilesInDir(attachFilePath);
+			if(tempFiles.size()==0){
+				listView.setEmptyView(viewEmpty);
+			}
+			viewLoading.setVisibility(View.GONE);
+			listData.addAll(tempFiles); 
+			adapter.notifyDataSetChanged();
+		}else{
+			refresh();
+			isFirstRun = false;
+		}
 	}
 	
 	public void editNote(View view){
@@ -82,7 +139,17 @@ public class NoteViewActivity extends BaseActivity {
 //		}
 		return super.onKeyDown(keyCode, event);
 	}
-	
-	
+
+	@Override
+	public void onLongClickRefresh() {
+		listData.clear();
+		List<File> tempFiles = FileUtils.listFilesInDir(attachFilePath);
+		if(tempFiles.size()==0){
+			listView.setEmptyView(viewEmpty);
+		}
+		viewLoading.setVisibility(View.GONE);
+		listData.addAll(tempFiles); 
+		adapter.notifyDataSetChanged();
+	}
 	
 }
