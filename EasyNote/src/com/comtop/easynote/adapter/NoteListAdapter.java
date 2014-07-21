@@ -69,14 +69,8 @@ public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 					.findViewById(R.id.tv_note_content);
 			holder.createTime = (TextView) convertView
 					.findViewById(R.id.tv_note_create_time);
-//			holder.noteImage1 = (ImageView) convertView
-//					.findViewById(R.id.imv_note_image1);
-//			holder.noteImage2 = (ImageView) convertView
-//					.findViewById(R.id.imv_note_image2);
-//			holder.noteImage3 = (ImageView) convertView
-//					.findViewById(R.id.imv_note_image3);
-//			holder.noteImage4 = (ImageView) convertView
-//					.findViewById(R.id.imv_note_image4);
+			holder.attachImageView = (ImageView)convertView
+					.findViewById(R.id.iv_attach_icon);
 			
 			convertView.setTag(holder);
 		} else {
@@ -95,14 +89,9 @@ public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 		}
 		holder.createTime.setText("ÐÞ¸ÄÊ±¼ä£º" + 
 				DateTimeUtils.formatDate(noteVO.getModifyTime(), DateTimeUtils.ISO_DATETIME_FORMAT));
-//		holder.noteImage1.setImageDrawable(
-//				context.getResources().getDrawable(R.drawable.image_1));
-//		holder.noteImage2.setImageDrawable(
-//				context.getResources().getDrawable(R.drawable.image_2));
-//		holder.noteImage3.setImageDrawable(
-//				context.getResources().getDrawable(R.drawable.image_3));
-//		holder.noteImage4.setImageDrawable(
-//				context.getResources().getDrawable(R.drawable.image_4));
+		if(noteVO.getListAttachment().size()==0){
+			holder.attachImageView.setVisibility(View.GONE);
+		}
 		
 		convertView.setOnLongClickListener(this);
 		convertView.setOnClickListener(new OnClickListener() {
@@ -169,13 +158,8 @@ public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 	        
 	    public TextView createTime; 
 	    
-//	    public ImageView noteImage1;
-//	    
-//	    public ImageView noteImage2;
-//	    
-//	    public ImageView noteImage3;
-//	    
-//	    public ImageView noteImage4;
+	    public ImageView attachImageView;
+	    
 	}
 
 }
