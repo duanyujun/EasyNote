@@ -228,8 +228,20 @@ public class NoteEditActivity extends BaseActivity {
 			}
 			this.am.abandonAudioFocus(this.afChangeListener);
 			
+			Intent objIntent = new Intent();
+			if(StringUtils.isNotBlank(noteId)){
+				objIntent.setClass(this, NoteViewActivity.class);
+				objIntent.putExtra("noteId", noteId);
+				objIntent.putExtra("noteTitle", strOldTitle);
+				objIntent.putExtra("noteContent", strOldContent);
+			}else{
+				objIntent.setClass(this, NoteListActivity.class);
+			}
+			startActivity(objIntent);
+			return true;
+		}else{
+			return super.onKeyDown(keyCode, event);
 		}
-		return super.onKeyDown(keyCode, event);
 	}
 	
 	/**
