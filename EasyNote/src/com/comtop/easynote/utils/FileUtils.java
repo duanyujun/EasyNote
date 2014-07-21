@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import android.graphics.Bitmap;
@@ -70,6 +71,18 @@ public class FileUtils {
 				listFile.add(temp);
 			}
 		}
+		
+		return listFile;
+	}
+	
+	/**
+	 * 查找目录下的文件，并且按照文件类型排序
+	 * @param filepath
+	 * @return
+	 */
+	public static List<File> listFilesInDirByType(String filepath){
+		List<File> listFile = listFilesInDir(filepath);
+		listFile = sortFileType(listFile);
 		return listFile;
 	}
 	
@@ -100,6 +113,28 @@ public class FileUtils {
 			}
 		}
 		return filePath;
+	}
+	
+	/**
+	 * 按照文件类型排序
+	 * @param listFiles
+	 */
+	public static final List<File> sortFileType(List<File> listFiles){
+		if(listFiles==null || listFiles.size()==0)
+			return listFiles;
+		List<File> listReturn = new ArrayList<File>(listFiles.size());
+		List<File> listSound = new ArrayList<File>();
+		for(File file : listFiles){
+			if(file.getName().endsWith(".jpg")){
+				listReturn.add(file);
+			}else{
+				listSound.add(file);
+			}
+		}
+		for(File file : listSound){
+			listReturn.add(file);
+		}
+		return listReturn;
 	}
 	
 }

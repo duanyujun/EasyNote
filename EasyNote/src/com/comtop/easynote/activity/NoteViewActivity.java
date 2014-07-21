@@ -1,6 +1,7 @@
 package com.comtop.easynote.activity;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 import android.app.AlertDialog;
@@ -85,7 +86,7 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 	}
 	
 	private void refresh(){
-		listData = FileUtils.listFilesInDir(attachFilePath);
+		listData = FileUtils.listFilesInDirByType(attachFilePath);
 		adapter = new ViewListAdapter(this, listData);
 		adapter.setOnLongClickListener(this);
 		listView.setAdapter(adapter);
@@ -94,15 +95,18 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 		}
 		viewLoading.setVisibility(View.GONE);
 	}
+	
 	@Override
 	protected void onResume() {
 		super.onResume();
 		if(!isFirstRun){
 			listData.clear();
-			List<File> tempFiles = FileUtils.listFilesInDir(attachFilePath);
+			List<File> tempFiles = FileUtils.listFilesInDirByType(attachFilePath);
+			
 			if(tempFiles.size()==0){
 				listView.setEmptyView(viewEmpty);
 			}
+			
 			viewLoading.setVisibility(View.GONE);
 			listData.addAll(tempFiles); 
 			adapter.notifyDataSetChanged();
@@ -143,7 +147,7 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 	@Override
 	public void onLongClickRefresh() {
 		listData.clear();
-		List<File> tempFiles = FileUtils.listFilesInDir(attachFilePath);
+		List<File> tempFiles = FileUtils.listFilesInDirByType(attachFilePath);
 		if(tempFiles.size()==0){
 			listView.setEmptyView(viewEmpty);
 		}
