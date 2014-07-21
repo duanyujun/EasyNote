@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/search_box_view"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal" >
+
+    <!-- 搜索框加载后去掉焦点 -->
+    <LinearLayout
+        android:layout_width="0px"
+        android:layout_height="0px"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="40dp"
+        android:background="@color/back_light_gray"
+        android:orientation="horizontal" >
+
+        <!-- 搜索框 -->
+        <FrameLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+          
+            android:layout_weight="11"
+            android:background="@drawable/border_lite"
+            android:orientation="horizontal" >
+
+            <AutoCompleteTextView
+                android:id="@+id/search_box_atv"
+                android:layout_width="fill_parent"
+                android:layout_height="30dp"
+                android:layout_gravity="center_vertical"
+                android:hint="@string/note_search_hint_string"
+                android:background="@drawable/border_lite"
+                android:dropDownHorizontalOffset="-6dp"
+                android:dropDownVerticalOffset="3dp"
+                android:dropDownWidth="match_parent"
+                android:ellipsize="end"
+                android:imeOptions="actionSearch"
+                android:singleLine="true"
+                android:textSize="14sp" />
+
+            <ImageView
+                android:id="@+id/search_box_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_marginTop="8dp"
+                android:src="@drawable/input_delete_new"
+                android:visibility="gone"/>
+        </FrameLayout>
+        <!-- 搜索图片按钮 -->
+
+        <ImageView
+            android:id="@+id/search_box_btn_query"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingTop="5dp"
+            android:src="@drawable/note_list_search" />
+    </LinearLayout>
+
+</LinearLayout>
