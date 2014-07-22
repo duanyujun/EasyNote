@@ -16,6 +16,8 @@ public class NoteVO {
 	
 	private Timestamp modifyTime;
 	
+	private int version;
+	
 	private List<FileVO> listAttachment = 
 			new ArrayList<FileVO>();
 	
@@ -57,6 +59,14 @@ public class NoteVO {
 
 	public void setModifyTime(Timestamp modifyTime) {
 		this.modifyTime = modifyTime;
+	}
+	
+	public int getVersion() {
+		return version;
+	}
+
+	public void setVersion(int version) {
+		this.version = version;
 	}
 
 	public List<FileVO> getListAttachment() {

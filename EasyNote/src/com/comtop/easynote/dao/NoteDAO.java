@@ -121,6 +121,7 @@ public class NoteDAO {
 			noteVO.setNoteTitle(cursor.getString(2));
 			noteVO.setNoteContent(cursor.getString(3));
 			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setVersion(cursor.getInt(5));
 		}
 		
 		//读取FileVO
@@ -141,16 +142,43 @@ public class NoteDAO {
 	}
 	
 	/**
+	 * 读取笔记内容，不读取附件
+	 * @param noteId 笔记Id
+	 * @return NoteVO
+	 */
+	public NoteVO readOnlyNoteVO(String noteId){
+		NoteVO noteVO = new NoteVO();
+		StringBuilder sbReadSql = new StringBuilder();
+		SQLiteDatabase db = helper.getReadableDatabase();
+		sbReadSql.append(" select * from ").append(DatabaseHelper.T_NOTE)
+			.append(" where note_id = '").append(noteId).append("'");
+		Cursor cursor = db.rawQuery(sbReadSql.toString(), null);
+		while(cursor.moveToNext()){
+			noteVO.setNoteId(cursor.getString(0));
+			noteVO.setUserId(cursor.getString(1));
+			noteVO.setNoteTitle(cursor.getString(2));
+			noteVO.setNoteContent(cursor.getString(3));
+			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setVersion(cursor.getInt(5));
+		}
+		
+		db.close(); 
+		return noteVO;
+	}
+	
+	/**
 	 * 更新笔记
 	 */
 	public int updateNote(NoteVO noteVO){
 		StringBuilder sbFileSql = new StringBuilder();
+		NoteVO oldNoteVO = readOnlyNoteVO(noteVO.getNoteId());
 		SQLiteDatabase db = helper.getWritableDatabase();
 		ContentValues cv = new ContentValues();
 		cv.put("note_title", noteVO.getNoteTitle());
 		cv.put("note_content", noteVO.getNoteContent());
 		cv.put("modify_time", DateTimeUtils.formatDateTime(
 				new Timestamp(new Date().getTime()), DateTimeUtils.ISO_DATETIME_FORMAT));
+		cv.put("version", oldNoteVO.getVersion()+1);
 		String[] args = {noteVO.getNoteId()}; 
 		db.beginTransaction();
 		int iResult = db.update(DatabaseHelper.T_NOTE, cv, "note_id=?", args);
@@ -202,6 +230,7 @@ public class NoteDAO {
 			noteVO.setNoteTitle(cursor.getString(2));
 			noteVO.setNoteContent(cursor.getString(3));
 			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setVersion(cursor.getInt(5));
 			lstNote.add(noteVO);
 		}
 		
@@ -253,6 +282,7 @@ public class NoteDAO {
 			}
 			noteVO.setNoteContent(strNoteContent);
 			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setVersion(cursor.getInt(5));
 			lstNote.add(noteVO);
 		}
 		
@@ -287,6 +317,7 @@ public class NoteDAO {
 			}
 			noteVO.setNoteContent(strNoteContent);
 			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setVersion(cursor.getInt(5));
 			lstNote.add(noteVO);
 		}
 		

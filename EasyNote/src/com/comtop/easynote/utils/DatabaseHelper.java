@@ -35,7 +35,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 		sbNoteSql.append("(note_id text primary key, ");
 		sbNoteSql.append(" user_id text, note_title text, note_content text, ");
 		//sbNoteSql.append(" modify_time timestamp default CURRENT_TIMESTAMP) ");
-		sbNoteSql.append(" modify_time timestamp default (datetime('now', 'localtime'))) ");
+		sbNoteSql.append(" modify_time timestamp default (datetime('now', 'localtime')), version integer default 1) ");
 		db.execSQL(sbNoteSql.toString());
 		
 		StringBuilder sbFileSql = new StringBuilder();
