@@ -89,7 +89,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		RequestParams params = new RequestParams();
 		params.put("userId", userId);
 		//读取本地该用户全部的Note
-		final List<NoteVO> listNoteVO = noteDAO.listAllNote(userId);
+		List<NoteVO> listNoteVO = noteDAO.listAllNote(userId);
 		if(listNoteVO.size()>0){
 			HttpEntryVO httpEntryVO = new HttpEntryVO();
 			httpEntryVO.setListNoteVO(listNoteVO);
@@ -111,6 +111,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 				if (StringUtils.isNotBlank(response)) {
 					HttpEntryVO listRemoteNoteVO = objGson.fromJson(response, 
 							new TypeToken<HttpEntryVO>() {}.getType());
+					List<NoteVO> listNoteVO = noteDAO.listAllNote(userId);
 					handleSyncNotes(listNoteVO, listRemoteNoteVO.getListNoteVO());
 				} else {
 					
@@ -206,6 +207,9 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 			}
 		}
 		
+		listData.clear();
+		listData.addAll(noteDAO.listAllNote(userId)); 
+		adapter.notifyDataSetChanged();
 	}
 	
 	private void initSdDir(){

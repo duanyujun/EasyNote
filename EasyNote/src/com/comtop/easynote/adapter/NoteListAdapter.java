@@ -90,8 +90,7 @@ public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 		}else{
 			holder.noteContent.setText(noteContent.replaceAll("\n", ""));
 		}
-		holder.createTime.setText("修改时间：" + 
-				DateTimeUtils.formatDate(noteVO.getModifyTime(), DateTimeUtils.ISO_DATETIME_FORMAT));
+		holder.createTime.setText("修改时间：" + noteVO.getModifyTime());
 		if(noteVO.getListAttachment().size()==0){
 			holder.attachImageView.setVisibility(View.GONE);
 		}else{

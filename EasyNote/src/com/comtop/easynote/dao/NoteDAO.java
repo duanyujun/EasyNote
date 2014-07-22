@@ -120,7 +120,7 @@ public class NoteDAO {
 			noteVO.setUserId(cursor.getString(1));
 			noteVO.setNoteTitle(cursor.getString(2));
 			noteVO.setNoteContent(cursor.getString(3));
-			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setModifyTime(cursor.getString(4));
 			noteVO.setVersion(cursor.getInt(5));
 		}
 		
@@ -158,7 +158,7 @@ public class NoteDAO {
 			noteVO.setUserId(cursor.getString(1));
 			noteVO.setNoteTitle(cursor.getString(2));
 			noteVO.setNoteContent(cursor.getString(3));
-			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setModifyTime(cursor.getString(4));
 			noteVO.setVersion(cursor.getInt(5));
 		}
 		
@@ -229,7 +229,7 @@ public class NoteDAO {
 			noteVO.setUserId(cursor.getString(1));
 			noteVO.setNoteTitle(cursor.getString(2));
 			noteVO.setNoteContent(cursor.getString(3));
-			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setModifyTime(cursor.getString(4));
 			noteVO.setVersion(cursor.getInt(5));
 			lstNote.add(noteVO);
 		}
@@ -281,7 +281,7 @@ public class NoteDAO {
 				noteVO.setNoteTitle(strNoteTitle);
 			}
 			noteVO.setNoteContent(strNoteContent);
-			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setModifyTime(cursor.getString(4));
 			noteVO.setVersion(cursor.getInt(5));
 			lstNote.add(noteVO);
 		}
@@ -316,7 +316,7 @@ public class NoteDAO {
 				noteVO.setNoteTitle(strNoteTitle);
 			}
 			noteVO.setNoteContent(strNoteContent);
-			noteVO.setModifyTime(Timestamp.valueOf(cursor.getString(4)));
+			noteVO.setModifyTime(cursor.getString(4));
 			noteVO.setVersion(cursor.getInt(5));
 			lstNote.add(noteVO);
 		}

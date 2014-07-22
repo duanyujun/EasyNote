@@ -14,7 +14,7 @@ public class NoteVO {
 	
 	private String noteContent;
 	
-	private Timestamp modifyTime;
+	private String modifyTime;
 	
 	private int version;
 	
@@ -53,14 +53,14 @@ public class NoteVO {
 		this.noteContent = noteContent;
 	}
 
-	public Timestamp getModifyTime() {
+	public String getModifyTime() {
 		return modifyTime;
 	}
 
-	public void setModifyTime(Timestamp modifyTime) {
+	public void setModifyTime(String modifyTime) {
 		this.modifyTime = modifyTime;
 	}
-	
+
 	public int getVersion() {
 		return version;
 	}
