@@ -76,12 +76,12 @@ public class FtpUtils {
 		String fileName;
 		try {
 			ftpClient.changeWorkingDirectory(remotePath);
-			ftpClient.setBufferSize(1024);
-			ftpClient.setControlEncoding("UTF-8");
+			//ftpClient.setBufferSize(1024);
+			//ftpClient.setControlEncoding("UTF-8");
 			ftpClient.enterLocalPassiveMode();
 			for(FileVO fileVO : listFiles){
 				fis = new FileInputStream(fileVO.getFilePath());
-				fileName = fileVO.getFileId()+(fileVO.getFileType()==0?".jpg":".amr");
+				fileName = fileVO.getFileId();
 				ftpClient.storeFile(fileName, fis);
 				fis.close();
 				fis = null;

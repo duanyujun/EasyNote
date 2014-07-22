@@ -56,6 +56,8 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 	private SearchBoxLite searchBoxLite;
 	private MyApplication application;
 	private String userId;
+	private FTPClient ftpClient;
+	private boolean isLogin;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -115,6 +117,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 				}
 				if(mAlertDialog!=null){
 					mAlertDialog.dismiss();
+					mAlertDialog = null;
 				}
 			}
 
@@ -134,11 +137,13 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		for(NoteVO noteVO : listLocalNotes){
 			localNoteMap.put(noteVO.getNoteId(), noteVO);
 		}
+		
 		//需要将服务器端note保存到本地的list
 		List<NoteVO> listNeedInsertLocal = new ArrayList<NoteVO>();
 		//需要将服务器端note更新到本地的list
 		List<NoteVO> listNeedUpdateLocal = new ArrayList<NoteVO>();
 		//遍历服务器端传过来的note
+		Map<String, NoteVO> remoteNoteMap = new HashMap<String, NoteVO>();
 		NoteVO localNoteVO;
 		for(NoteVO noteVO : listRemoteNotes){
 			localNoteVO = localNoteMap.get(noteVO.getNoteId());
@@ -150,9 +155,14 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 					listNeedUpdateLocal.add(noteVO);
 				}
 			}
+			//添加到remoteNoteMap
+			remoteNoteMap.put(noteVO.getNoteId(), noteVO);
 		}
 		//ftp客户端
-		FTPClient ftpClient = FtpUtils.getFtpClient();
+		if(!isLogin){
+			ftpClient = FtpUtils.getFtpClient();
+		}
+		isLogin = true;
 		//处理需要插入的
 		for(NoteVO noteVO : listNeedInsertLocal){
 			//插入数据库
@@ -175,6 +185,27 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 				FtpUtils.downloadFile(ftpClient, noteVO.getNoteId(), userId);
 			}
 		}
+		//处理本地有，但是服务器端没有的，然后上传附件到ftp
+		List<NoteVO> listUploadImage = new ArrayList<NoteVO>();
+		for(NoteVO noteVO : listLocalNotes){
+			if(remoteNoteMap.get(noteVO.getNoteId())==null){
+				listUploadImage.add(noteVO);
+			}
+		}
+		boolean isDirCreated = false;
+		for(NoteVO noteVO : listUploadImage){
+			if(noteVO.getListAttachment().size()>0){
+				//建目录
+				if(!isDirCreated){
+					FtpUtils.createDir(ftpClient, "/files");
+					FtpUtils.createDir(ftpClient, "/files/"+userId);
+					FtpUtils.createDir(ftpClient, "/files/"+userId+"/"+noteVO.getNoteId());
+					isDirCreated = true;
+				}
+				FtpUtils.uploadFile(ftpClient, noteVO.getListAttachment(), userId);
+			}
+		}
+		
 	}
 	
 	private void initSdDir(){
