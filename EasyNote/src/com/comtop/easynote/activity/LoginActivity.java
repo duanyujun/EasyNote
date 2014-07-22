@@ -8,7 +8,6 @@ import com.comtop.easynote.utils.EncryUtil;
 import com.comtop.easynote.utils.StringUtils;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Bundle;
@@ -19,12 +18,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class LoginActivity extends BaseActivity {
 
 	private EditText mUsername;
 	private EditText mPassword;
+	private TextView mClearPassword;
 	private SharedPreferences sharedPreferences;
 	
 	@Override
@@ -34,20 +35,36 @@ public class LoginActivity extends BaseActivity {
 		setContentView(R.layout.login_main);
 		mUsername = (EditText)findViewById(R.id.et_username);
 		mPassword= (EditText)findViewById(R.id.et_password);
+		mClearPassword = (TextView)findViewById(R.id.tv_clear_password);
 		initUserInf();
 		Button btnLogin = (Button)findViewById(R.id.btn_login);
 		btnLogin.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if(StringUtils.isBlank(mUsername.getText().toString())){
-					Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+					if(StringUtils.isBlank(mPassword.getText().toString())){
+						Toast.makeText(LoginActivity.this, "请输入用户名和密码", Toast.LENGTH_SHORT).show();
+					}else{
+						Toast.makeText(LoginActivity.this, "请输入用户名", Toast.LENGTH_SHORT).show();
+					}
 				}else{
-					MyApplication application = MyApplication.getInstance();
-					application.setUserId(mUsername.getText().toString());
-					saveUserInf(mUsername.getText().toString(), mPassword.getText().toString());
-					hideIME(v);
-					openActivity(NoteListActivity.class);
+					if(StringUtils.isBlank(mPassword.getText().toString())){
+						Toast.makeText(LoginActivity.this, "请输入密码", Toast.LENGTH_SHORT).show();
+					}else{
+						MyApplication application = MyApplication.getInstance();
+						application.setUserId(mUsername.getText().toString());
+						saveUserInf(mUsername.getText().toString(), mPassword.getText().toString());
+						hideIME(v);
+						openActivity(NoteListActivity.class);
+					}
 				}
+			}
+		});
+		
+		mClearPassword.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				clearPassword();
 			}
 		});
 	}
@@ -60,7 +77,9 @@ public class LoginActivity extends BaseActivity {
 			mUsername.setText(userName);
 			String password = sharedPreferences.getString(Constants.PASSWORD, "");
 			if(StringUtils.isNotBlank(password)){
-				password = EncryUtil.decrypt(password).toString();
+				if(EncryUtil.decrypt(password)!=null){
+					password = EncryUtil.decrypt(password).toString();
+				}
 			}
 			mPassword.setText(password);
 		}
@@ -74,6 +93,13 @@ public class LoginActivity extends BaseActivity {
 			editor.putString(Constants.PASSWORD, password);
 		}
 		editor.commit();
+	}
+	
+	public void clearPassword(){
+		Editor editor = sharedPreferences.edit();
+		editor.remove(Constants.PASSWORD);
+		editor.commit();
+		mPassword.setText("");
 	}
 	
 	/**

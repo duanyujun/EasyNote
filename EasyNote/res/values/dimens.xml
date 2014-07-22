@@ -18,6 +18,7 @@
 	<dimen name="note_item_image_height">30dp</dimen>
 	<dimen name="note_item_margin_left">6dp</dimen>
 	<dimen name="note_item_time_left">65dp</dimen>
+	<dimen name="note_title_margin_left">10dp</dimen>
 	
 	<!-- 编辑页面 -->
 	<dimen name="note_edit_title_size">16sp</dimen>
