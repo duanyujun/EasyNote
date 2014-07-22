@@ -13,9 +13,10 @@
         >
         <ImageView 
             android:id="@+id/iv_attach_image"
+            android:layout_alignParentLeft="true"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
            />
     </RelativeLayout>
     <LinearLayout 
