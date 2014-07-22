@@ -81,7 +81,9 @@ public class ViewListAdapter extends BaseAdapter implements OnLongClickListener{
 		
 		final File file = list.get(position);
 		if(file.getName().endsWith(".jpg")){
-			Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+			BitmapFactory.Options options = new BitmapFactory.Options(); 
+			options.inSampleSize = 2;
+			Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 			holder.attachImage.setImageBitmap(bitmap);
 			holder.imageLayout.setVisibility(View.VISIBLE);
 			holder.soundLayout.setVisibility(View.GONE);

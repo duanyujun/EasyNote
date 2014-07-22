@@ -80,7 +80,9 @@ public class AttachListAdapter extends BaseAdapter implements OnLongClickListene
 		
 		final File file = list.get(position);
 		if(file.getName().endsWith(".jpg")){
-			Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+			BitmapFactory.Options options = new BitmapFactory.Options(); 
+			options.inSampleSize = 4;
+			Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath(), options);
 			holder.attachImage.setImageBitmap(bitmap);
 		}else{
 			holder.attachImage.setImageDrawable(context.getResources().getDrawable(R.drawable.fi_mp3));
