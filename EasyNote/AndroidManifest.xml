@@ -40,12 +40,14 @@
              >
         </activity>
         <activity android:name="com.comtop.easynote.activity.NoteEditActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:configChanges="keyboardHidden|orientation" 
             android:windowSoftInputMode="stateHidden|adjustResize"
             >
         </activity>
         <activity android:name="com.comtop.easynote.activity.NoteViewActivity" 
+             android:launchMode="singleTop"
              >
         </activity>
         <activity android:name="com.comtop.easynote.activity.AttachListActivity" 

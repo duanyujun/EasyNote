@@ -139,6 +139,7 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 	
 	public void back(View view){
 		Intent objIntent = new Intent(this, NoteListActivity.class);
+		objIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(objIntent);
 		//finish();
 	}
@@ -150,6 +151,7 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 			//openActivity(NoteListActivity.class);
 			startActivity(objIntent);
 			//this.overridePendingTransition(R.anim.push_left_out, R.anim.push_left_in);
+			objIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			finish();
 			return true;
 		}

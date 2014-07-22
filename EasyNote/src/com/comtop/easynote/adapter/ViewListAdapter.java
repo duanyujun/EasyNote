@@ -122,32 +122,33 @@ public class ViewListAdapter extends BaseAdapter implements OnLongClickListener{
 	
 	@Override
 	public boolean onLongClick(View v) {
-		AlertDialog.Builder builder = new Builder(context);
-		builder.setMessage("确认删除吗？");
-		builder.setTitle("提示");
-		final String strFileAbsPath = ((TextView)v.findViewById(R.id.attach_abs_path)).getText().toString();
-		builder.setPositiveButton("确认",
-				new android.content.DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						File file = new File(strFileAbsPath);
-						if(file.exists()){
-							file.delete();
-						}
-						onLongClickListener.onLongClickRefresh();			
-						dialog.dismiss();
-					}
-				});
-
-		builder.setNegativeButton("取消",
-				new android.content.DialogInterface.OnClickListener() {
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
-
-		builder.create().show();
+		//do nothing
+//		AlertDialog.Builder builder = new Builder(context);
+//		builder.setMessage("确认删除吗？");
+//		builder.setTitle("提示");
+//		final String strFileAbsPath = ((TextView)v.findViewById(R.id.attach_abs_path)).getText().toString();
+//		builder.setPositiveButton("确认",
+//				new android.content.DialogInterface.OnClickListener() {
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						File file = new File(strFileAbsPath);
+//						if(file.exists()){
+//							file.delete();
+//						}
+//						onLongClickListener.onLongClickRefresh();			
+//						dialog.dismiss();
+//					}
+//				});
+//
+//		builder.setNegativeButton("取消",
+//				new android.content.DialogInterface.OnClickListener() {
+//					@Override
+//					public void onClick(DialogInterface dialog, int which) {
+//						dialog.dismiss();
+//					}
+//				});
+//
+//		builder.create().show();
 		return true;
 	}
 	

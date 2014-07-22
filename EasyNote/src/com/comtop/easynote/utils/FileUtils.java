@@ -62,6 +62,34 @@ public class FileUtils {
 		}
 	}
 	
+	/**
+	 * 删除一个目录下
+	 * @param path
+	 */
+	public static void delteDir(String path) {
+		if (StringUtils.isBlank(path)) {
+			return;
+		}
+		File file = new File(path);
+		if(!file.exists()){
+			return;
+		}
+		if (!file.isDirectory()) {
+			file.delete();
+		} else if (file.isDirectory()) {
+			String[] filelist = file.list();
+			for (int i = 0; i < filelist.length; i++) {
+				File delfile = new File(path + "/" + filelist[i]);
+				if (!delfile.isDirectory()) {
+					delfile.delete();
+				} else if (delfile.isDirectory()) {
+					delteDir(path + "/" + filelist[i]);
+				}
+			}
+			file.delete();
+		}
+	}
+	
 	public static List<File> listFilesInDir(String filepath){
 		List<File> listFile = new ArrayList<File>();
 		File file = new File(filepath);

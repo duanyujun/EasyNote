@@ -22,6 +22,7 @@ import com.comtop.easynote.dao.NoteDAO;
 import com.comtop.easynote.model.NoteVO;
 import com.comtop.easynote.utils.DatabaseHelper;
 import com.comtop.easynote.utils.DateTimeUtils;
+import com.comtop.easynote.utils.FileUtils;
 import com.comtop.easynote.utils.StringUtils;
 
 public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
@@ -29,12 +30,14 @@ public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 	private LayoutInflater inflater;
 	private List<NoteVO> list;
 	private Context context;
+	private String attachmentPath;
 	private OnLongClickListener onLongClickListener;
 	
-	public NoteListAdapter(Context context, List<NoteVO> list){
+	public NoteListAdapter(Context context, List<NoteVO> list, String attachmentPath){
 		 this.context = context;
 		 inflater = LayoutInflater.from(context);
 		 this.list = list;
+		 this.attachmentPath = attachmentPath;
 	}
 	
 	public void setOnLongClickListener(OnLongClickListener onLongClickListener) {
@@ -125,6 +128,9 @@ public class NoteListAdapter extends BaseAdapter implements OnLongClickListener{
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						noteDAO.deleteNote(new String[]{noteId});
+						//É¾³ý¸ÃnoteÄ¿Â¼
+						String notePath = attachmentPath + "/" + noteId;
+						FileUtils.delteDir(notePath);
 						onLongClickListener.onLongClickRefresh();			
 						dialog.dismiss();
 					}

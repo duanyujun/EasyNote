@@ -154,8 +154,12 @@ public class NoteEditActivity extends BaseActivity {
 			objIntent.putExtra("noteTitle", strOldTitle);
 			objIntent.putExtra("noteContent", strOldContent);
 		}else{
+			//删除相应的目录
+			String notePath = FileUtils.APP_ATTACH_PATH + "/" + userId +"/"+ toSaveNoteId ;
+			FileUtils.delteDir(notePath);
 			objIntent.setClass(this, NoteListActivity.class);
 		}
+		objIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		startActivity(objIntent);
 	}
 	
@@ -244,6 +248,7 @@ public class NoteEditActivity extends BaseActivity {
 			}else{
 				objIntent.setClass(this, NoteListActivity.class);
 			}
+			objIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			startActivity(objIntent);
 			return true;
 		}else{

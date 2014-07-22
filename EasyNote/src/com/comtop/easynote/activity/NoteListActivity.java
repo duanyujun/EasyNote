@@ -58,12 +58,13 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		
 		application = (MyApplication)getApplication();
 		userId = application.getUserId();
+		initSdDir();
+		
 		listData = noteDAO.listAllNote(userId); 
-		adapter =new NoteListAdapter(this, listData);
+		adapter =new NoteListAdapter(this, listData, FileUtils.APP_ATTACH_PATH+"/"+userId);
 		adapter.setOnLongClickListener(this);
 		lvNote.setAdapter(adapter);
 		
-		initSdDir();
 		initSearch();
 	}
 	
