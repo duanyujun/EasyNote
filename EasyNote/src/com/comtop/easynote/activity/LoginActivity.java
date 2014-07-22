@@ -112,6 +112,7 @@ public class LoginActivity extends BaseActivity {
 		imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
 	}
 	
+	
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
 //		if(keyCode == KeyEvent.KEYCODE_BACK){

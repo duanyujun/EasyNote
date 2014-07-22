@@ -347,7 +347,7 @@ public class NoteEditActivity extends BaseActivity {
 				break;
 			case R.id.edit_stt_btn:
 				//转文字
-				Toast.makeText(NoteEditActivity.this, "待开发", Toast.LENGTH_SHORT);
+				Toast.makeText(NoteEditActivity.this, "待开发", Toast.LENGTH_SHORT).show();
 				break;	
 			case R.id.edit_audio_btn:
 				//录音
@@ -516,6 +516,7 @@ public class NoteEditActivity extends BaseActivity {
 			this.isRecording = false;
 			this.wl.release();
 			this.am.abandonAudioFocus(this.afChangeListener);
+			Toast.makeText(this, "录音成功", Toast.LENGTH_SHORT).show();
 			return;
 		} catch (Exception localException1) {
 			localException1.printStackTrace();
@@ -589,7 +590,7 @@ public class NoteEditActivity extends BaseActivity {
 				case Constants.RESULT_PHOTO:
 					btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH + "/" + userId +"/"+toSaveNoteId)));
 					isChanged = true;
-					//Toast.makeText(this, "success", Toast.LENGTH_SHORT);
+					Toast.makeText(this, "拍照成功", Toast.LENGTH_SHORT).show();
 					break;
 				case Constants.RESULT_IMAGE:
 					isChanged = true;
@@ -622,6 +623,7 @@ public class NoteEditActivity extends BaseActivity {
 		                
 		                btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH +"/" +userId +"/"+userId+"/"+toSaveNoteId)));
 		            } 
+					Toast.makeText(this, "添加图片成功", Toast.LENGTH_SHORT).show();
 					break;
 				default:
 					break;	
