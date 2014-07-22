@@ -10,6 +10,7 @@
 	<string name="note_item_create_time">修改时间：</string>
 	<string name="note_item_image_string">图片：</string>
 	<string name="note_search_hint_string">搜索笔记</string>
+	<string name="progress_dialog_title">温馨提示</string>
 	
 	
 	<!-- 笔记编辑页面 -->
