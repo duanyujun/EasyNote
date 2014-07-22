@@ -7,31 +7,35 @@
     android:background="@drawable/list_background"
     android:orientation="vertical" >
     
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="40dip"
         android:background="@color/back_light_gray"
         android:id="@+id/normalLayout"
         android:orientation="horizontal" >
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="40dip"
-            android:layout_weight="5"
-            android:background="@color/back_light_gray"
-            android:orientation="horizontal" >
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="40dip"
-            android:layout_weight="3"
-            android:background="@color/back_light_gray"
-            android:orientation="horizontal" >
-
+			<TextView 
+			    android:layout_marginLeft="@dimen/note_item_margin_left"
+			    android:layout_alignParentLeft="true"
+			    android:layout_width="wrap_content"
+			    android:layout_height="wrap_content"
+			    android:layout_centerVertical="true"
+			    android:text="@string/note_list_title"
+			    android:textSize="@dimen/note_edit_content_size"
+			    />            
+            
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="@dimen/note_item_margin_left"
+                android:layout_alignParentRight="true"
+                android:id="@+id/search_btn_img"
+                android:src="@drawable/note_list_search" />
             <TextView 
                 android:layout_width="1dp"
+                android:id="@+id/tv_split_1"
                 android:layout_height="fill_parent"
-                android:layout_gravity="right|center"
+                android:layout_toLeftOf="@id/search_btn_img"
                 android:layout_marginTop="@dimen/note_list_action_split"
                 android:layout_marginBottom="@dimen/note_list_action_split"
                 android:background="@color/split_gray"
@@ -39,29 +43,15 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
-                android:id="@+id/add_btn_img"
-                android:onClick="openEdit"
-                android:src="@drawable/note_list_add" />
-            <TextView 
-                android:layout_width="1dp"
-                android:layout_height="fill_parent"
-                android:layout_gravity="right|center"
-                android:layout_marginTop="@dimen/note_list_action_split"
-                android:layout_marginBottom="@dimen/note_list_action_split"
-                android:background="@color/split_gray"
-                />
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
+                android:layout_toLeftOf="@id/tv_split_1"
                 android:onClick="syncNote"
                 android:id="@+id/sync_btn_img"
                 android:src="@drawable/note_list_sync" />
             <TextView 
                 android:layout_width="1dp"
                 android:layout_height="fill_parent"
-                android:layout_gravity="right|center"
+                android:layout_toLeftOf="@id/sync_btn_img"
+                android:id="@+id/tv_split_2"
                 android:layout_marginTop="@dimen/note_list_action_split"
                 android:layout_marginBottom="@dimen/note_list_action_split"
                 android:background="@color/split_gray"
@@ -69,11 +59,19 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="right|center"
-                android:id="@+id/search_btn_img"
-                android:src="@drawable/note_list_search" />
-        </LinearLayout>
-    </LinearLayout>
+                android:layout_toLeftOf="@id/tv_split_2"
+                android:id="@+id/add_btn_img"
+                android:onClick="openEdit"
+                android:src="@drawable/note_list_add" />
+            <TextView
+                android:layout_width="1dp"
+                android:layout_height="fill_parent"
+                android:layout_toLeftOf="@id/add_btn_img"
+                android:layout_marginTop="@dimen/note_list_action_split"
+                android:layout_marginBottom="@dimen/note_list_action_split"
+                android:background="@color/split_gray"
+                />
+    </RelativeLayout>
     
     <!-- 搜索框开始 -->
     <LinearLayout

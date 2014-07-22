@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.comtop.common.BaseActivity;
 import com.comtop.common.MyApplication;
@@ -50,7 +51,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 	private List<NoteVO> listData;
 	private boolean isFirstRun = true;
 	private LinearLayout searchLayout;
-	private LinearLayout normalLayout;
+	private RelativeLayout normalLayout;
 	private ImageView ivSearch;
 	private Button btnNoteCancel;
 	private SearchBoxLite searchBoxLite;
@@ -228,7 +229,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 	
 	private void initSearch(){
 		searchLayout = (LinearLayout) findViewById(R.id.searchLayout);
-		normalLayout = (LinearLayout) findViewById(R.id.normalLayout);
+		normalLayout = (RelativeLayout) findViewById(R.id.normalLayout);
 		ivSearch = (ImageView) findViewById(R.id.search_btn_img);
 		btnNoteCancel = (Button)findViewById(R.id.btnNoteCancel);
 		searchBoxLite = (SearchBoxLite)findViewById(R.id.searchBox);
