@@ -9,11 +9,11 @@ import android.widget.Toast;
 public final class IntentUtils {
 
 	public static final String openCamera(Activity paramActivity, String noteId,
-			int paramInt) {
+			int paramInt, String userId) {
 		
 
 		// 新建当前noteId目录
-		String noteIdDir = FileUtils.APP_ATTACH_PATH + "/" + noteId;
+		String noteIdDir = FileUtils.APP_ATTACH_PATH + "/" + userId + "/" + noteId;
 		if (!FileUtils.checkFileExists(noteIdDir)) {
 			FileUtils.createDIR(noteIdDir);
 		}
@@ -40,9 +40,9 @@ public final class IntentUtils {
 	}
 	
 	public static final void chooseImage(Activity paramActivity, String noteId,
-			int paramInt) {
+			int paramInt, String userId) {
 		// 新建当前noteId目录
-		String noteIdDir = FileUtils.APP_ATTACH_PATH + "/" + noteId;
+		String noteIdDir = FileUtils.APP_ATTACH_PATH + "/" +userId + "/" + noteId;
 		if (!FileUtils.checkFileExists(noteIdDir)) {
 			FileUtils.createDIR(noteIdDir);
 		}

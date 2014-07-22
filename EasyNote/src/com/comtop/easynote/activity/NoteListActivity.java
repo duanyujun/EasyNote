@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.comtop.common.BaseActivity;
+import com.comtop.common.MyApplication;
 import com.comtop.easynote.R;
 import com.comtop.easynote.adapter.NoteListAdapter;
 import com.comtop.easynote.dao.NoteDAO;
@@ -40,6 +41,8 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 	private ImageView ivSearch;
 	private Button btnNoteCancel;
 	private SearchBoxLite searchBoxLite;
+	private MyApplication application;
+	private String userId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +56,9 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		View headerView = inflater.inflate(R.layout.note_list_header, null);
 		lvNote.addHeaderView(headerView);
 		
-		listData = noteDAO.listAllNote(); 
+		application = (MyApplication)getApplication();
+		userId = application.getUserId();
+		listData = noteDAO.listAllNote(userId); 
 		adapter =new NoteListAdapter(this, listData);
 		adapter.setOnLongClickListener(this);
 		lvNote.setAdapter(adapter);
@@ -69,6 +74,10 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		
 		if (!FileUtils.checkFileExists(FileUtils.APP_ATTACH_PATH)) {
 			FileUtils.createDIR(FileUtils.APP_ATTACH_PATH);
+		}
+		
+		if (!FileUtils.checkFileExists(FileUtils.APP_ATTACH_PATH+"/"+userId)) {
+			FileUtils.createDIR(FileUtils.APP_ATTACH_PATH +"/"+userId);
 		}
 	}
 	
@@ -119,7 +128,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 				String input = searchBoxLite.getSearchString();
 				if(StringUtils.isBlank(input)){
 					listData.clear();
-					listData.addAll(noteDAO.listAllNote()); 
+					listData.addAll(noteDAO.listAllNote(userId)); 
 					adapter.notifyDataSetChanged();
 				}else{
 					listData.clear();
@@ -135,7 +144,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 		super.onResume();
 		if(!isFirstRun){
 			listData.clear();
-			listData.addAll(noteDAO.listAllNote()); 
+			listData.addAll(noteDAO.listAllNote(userId)); 
 			adapter.notifyDataSetChanged();
 		}else{
 			isFirstRun = false;
@@ -149,7 +158,7 @@ public class NoteListActivity extends BaseActivity implements com.comtop.easynot
 	@Override
 	public void onLongClickRefresh() {
 		listData.clear();
-		listData.addAll(noteDAO.listAllNote()); 
+		listData.addAll(noteDAO.listAllNote(userId)); 
 		adapter.notifyDataSetChanged();
 	}
 	

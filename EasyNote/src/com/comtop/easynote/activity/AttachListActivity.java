@@ -3,6 +3,7 @@ package com.comtop.easynote.activity;
 import java.io.File;
 import java.util.List;
 import com.comtop.common.BaseActivity;
+import com.comtop.common.MyApplication;
 import com.comtop.easynote.R;
 import com.comtop.easynote.adapter.AttachListAdapter;
 import com.comtop.easynote.adapter.AttachListAdapter.OnLongClickListener;
@@ -23,6 +24,8 @@ public class AttachListActivity extends BaseActivity implements OnLongClickListe
 	private String attachFilePath;
 	private View viewEmpty;
 	private View viewLoading;
+	private MyApplication application;
+	private String userId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,10 @@ public class AttachListActivity extends BaseActivity implements OnLongClickListe
 		Intent objIntent = this.getIntent();
 		noteId = objIntent.getStringExtra("noteId");
 		toSaveNoteId = objIntent.getStringExtra("toSaveNoteId");
-		attachFilePath = FileUtils.APP_ATTACH_PATH + "/" + toSaveNoteId;
+		application = (MyApplication)getApplication();
+		userId = application.getUserId();
+		
+		attachFilePath = FileUtils.APP_ATTACH_PATH + "/" + userId + "/" + toSaveNoteId;
 		
 		initView();
 	}

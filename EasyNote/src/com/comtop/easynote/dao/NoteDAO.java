@@ -187,11 +187,12 @@ public class NoteDAO {
 	 * 读取全部笔记
 	 * @return NoteVO集合
 	 */
-	public List<NoteVO> listAllNote(){
+	public List<NoteVO> listAllNote(String userId){
 		List<NoteVO> lstNote = new ArrayList<NoteVO>();
 		StringBuilder sbReadSql = new StringBuilder();
 		SQLiteDatabase db = helper.getReadableDatabase();
 		sbReadSql.append(" select * from ").append(DatabaseHelper.T_NOTE)
+				 .append(" where user_id = '").append(userId).append("' ")
 				 .append(" order by modify_time desc ");
 		Cursor cursor = db.rawQuery(sbReadSql.toString(), null);
 		while(cursor.moveToNext()){

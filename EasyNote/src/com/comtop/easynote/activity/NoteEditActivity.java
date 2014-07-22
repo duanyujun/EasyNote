@@ -55,6 +55,7 @@ public class NoteEditActivity extends BaseActivity {
 	private String noteId;
 	private NoteDAO noteDAO;
 	private MyApplication application;
+	private String userId;
 	private boolean isChanged;
 	private String strOldTitle = null;
 	private String strOldContent = null;
@@ -81,6 +82,7 @@ public class NoteEditActivity extends BaseActivity {
 		DatabaseHelper dbHelper = new DatabaseHelper(this, DatabaseHelper.DB_NAME, DatabaseHelper.DB_VERSION);
 		noteDAO = new NoteDAO(dbHelper);
 		application = (MyApplication)getApplication();
+		userId = application.getUserId();
 	}
 	
 	/**
@@ -125,7 +127,7 @@ public class NoteEditActivity extends BaseActivity {
 	}
 	
 	private void setAttachForNote(NoteVO noteVO){
-	    List<File> listFiles = FileUtils.listFilesInDir(FileUtils.APP_ATTACH_PATH+"/"+noteVO.getNoteId());
+	    List<File> listFiles = FileUtils.listFilesInDir(FileUtils.APP_ATTACH_PATH + "/" + userId +"/"+noteVO.getNoteId());
 	    for(File file : listFiles){
 	    	FileVO vo = new FileVO();
 	    	vo.setFileId(file.getName());
@@ -310,7 +312,7 @@ public class NoteEditActivity extends BaseActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
+		btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH + "/" + userId+"/"+toSaveNoteId)));
 	}
 	
 	/**
@@ -335,7 +337,8 @@ public class NoteEditActivity extends BaseActivity {
 			switch (v.getId()) {
 			case R.id.edit_photo_btn:
 				//ÅÄÕÕ
-				IntentUtils.openCamera(NoteEditActivity.this, toSaveNoteId, Constants.RESULT_PHOTO);
+				IntentUtils.openCamera(NoteEditActivity.this, toSaveNoteId, 
+						Constants.RESULT_PHOTO, userId);
 				break;
 			case R.id.edit_stt_btn:
 				//×ªÎÄ×Ö
@@ -348,7 +351,8 @@ public class NoteEditActivity extends BaseActivity {
 				break;
 			case R.id.edit_lib_btn:
 				//²åÈëÍ¼Æ¬
-				IntentUtils.chooseImage(NoteEditActivity.this, toSaveNoteId, Constants.RESULT_IMAGE);
+				IntentUtils.chooseImage(NoteEditActivity.this, 
+						toSaveNoteId, Constants.RESULT_IMAGE, userId);
 				break;	
 			case R.id.btnRecordFinish:
 				NoteEditActivity.this.audioBtn.setEnabled(true);
@@ -453,7 +457,7 @@ public class NoteEditActivity extends BaseActivity {
 				this.mMediaRecorder.setAudioEncoder(1);
 				this.mMediaRecorder.setAudioChannels(1);
 				
-				String noteIdDir = FileUtils.APP_ATTACH_PATH + "/" + toSaveNoteId;
+				String noteIdDir = FileUtils.APP_ATTACH_PATH + "/" + userId + "/" + toSaveNoteId;
 				if (!FileUtils.checkFileExists(noteIdDir)) {
 					FileUtils.createDIR(noteIdDir);
 				}
@@ -498,7 +502,7 @@ public class NoteEditActivity extends BaseActivity {
 			this.mMediaRecorder = null;
 			this.mStartTime = 0L;
 			//addFileToAttachFileList(IOUtil.getExternalFile(this.audioFilepath));
-			btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
+			btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH + "/" + userId +"/"+toSaveNoteId)));
 			
 			//showToast(getString(2131427872));
 			this.recordTimeText.setText("00:00");
@@ -578,7 +582,7 @@ public class NoteEditActivity extends BaseActivity {
 		if(resultCode == RESULT_OK){
 			switch(requestCode){
 				case Constants.RESULT_PHOTO:
-					btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
+					btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH + "/" + userId +"/"+toSaveNoteId)));
 					isChanged = true;
 					//Toast.makeText(this, "success", Toast.LENGTH_SHORT);
 					break;
@@ -592,7 +596,7 @@ public class NoteEditActivity extends BaseActivity {
 		                        image = MediaStore.Images.Media.getBitmap(this.getContentResolver(), mImageCaptureUri);  
 		                        if (image != null) {  
 		                            FileUtils.savePicToSdcard(image,
-		                            		FileUtils.APP_ATTACH_PATH + "/" + toSaveNoteId, 
+		                            		FileUtils.APP_ATTACH_PATH + "/" + userId + "/" + toSaveNoteId, 
 		                            		StringUtils.getDataFormatFileName("img_") + ".jpg");
 		                        }  
 		                    } catch (Exception e) {  
@@ -605,13 +609,13 @@ public class NoteEditActivity extends BaseActivity {
 		                        Bitmap image = extras.getParcelable("data");  
 		                        if (image != null) {  
 		                        	FileUtils.savePicToSdcard(image,
-		                            		FileUtils.APP_ATTACH_PATH + "/" + toSaveNoteId, 
+		                            		FileUtils.APP_ATTACH_PATH + "/" + userId + "/" + toSaveNoteId, 
 		                            		StringUtils.getDataFormatFileName("img_") + ".jpg");
 		                        }  
 		                    }  
 		                }  
 		                
-		                btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH+"/"+toSaveNoteId)));
+		                btnAttachment.setText(String.valueOf(FileUtils.listFiles(FileUtils.APP_ATTACH_PATH +"/" +userId +"/"+userId+"/"+toSaveNoteId)));
 		            } 
 					break;
 				default:

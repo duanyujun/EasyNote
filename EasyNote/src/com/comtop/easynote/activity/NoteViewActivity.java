@@ -17,6 +17,7 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.comtop.common.BaseActivity;
+import com.comtop.common.MyApplication;
 import com.comtop.easynote.R;
 import com.comtop.easynote.adapter.AttachListAdapter;
 import com.comtop.easynote.adapter.ViewListAdapter;
@@ -41,6 +42,8 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 	private String attachFilePath;
 	private View viewEmpty;
 	private View viewLoading;
+	private MyApplication application;
+	private String userId;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -69,8 +72,10 @@ public class NoteViewActivity extends BaseActivity implements OnLongClickListene
 			mContent.setFocusableInTouchMode(false);
 			mContent.clearFocus();
 		}
+		application = (MyApplication)getApplication();
+		userId = application.getUserId();
 		
-		attachFilePath = FileUtils.APP_ATTACH_PATH + "/" + noteId;
+		attachFilePath = FileUtils.APP_ATTACH_PATH + "/" + userId + "/" + noteId;
 		
 		ScrollView svContent = (ScrollView) findViewById(R.id.sv_content);
 		svContent.smoothScrollTo(0, 0);
