@@ -347,7 +347,7 @@ public class NoteEditActivity extends BaseActivity {
 				break;
 			case R.id.edit_stt_btn:
 				//转文字
-				
+				Toast.makeText(NoteEditActivity.this, "待开发", Toast.LENGTH_SHORT);
 				break;	
 			case R.id.edit_audio_btn:
 				//录音
