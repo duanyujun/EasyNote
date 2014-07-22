@@ -35,14 +35,27 @@ public class NoteDAO {
 		StringBuilder sbFileSql = new StringBuilder();
 		SQLiteDatabase db = helper.getWritableDatabase();
 		db.beginTransaction();
-		//t_note表新增sql
-		sbNoteSql.append(" insert into ").append(DatabaseHelper.T_NOTE)
-		  		 .append(" (note_id, user_id, note_title, note_content) values ")
-		         .append(" ('").append(noteVO.getNoteId())
-		         .append("','").append(noteVO.getUserId())
-		         .append("','").append(noteVO.getNoteTitle())
-		         .append("','").append(noteVO.getNoteContent())
-		         .append("')");
+		if(StringUtils.isBlank(noteVO.getModifyTime())){
+			//t_note表新增sql
+			sbNoteSql.append(" insert into ").append(DatabaseHelper.T_NOTE)
+			  		 .append(" (note_id, user_id, note_title, note_content) values ")
+			         .append(" ('").append(noteVO.getNoteId())
+			         .append("','").append(noteVO.getUserId())
+			         .append("','").append(noteVO.getNoteTitle())
+			         .append("','").append(noteVO.getNoteContent())
+			         .append("')");
+		}else{
+			//t_note表新增sql
+			sbNoteSql.append(" insert into ").append(DatabaseHelper.T_NOTE)
+			  		 .append(" (note_id, user_id, note_title, note_content, modify_time) values ")
+			         .append(" ('").append(noteVO.getNoteId())
+			         .append("','").append(noteVO.getUserId())
+			         .append("','").append(noteVO.getNoteTitle())
+			         .append("','").append(noteVO.getNoteContent())
+			         .append("','").append(noteVO.getModifyTime())
+			         .append("')");
+		}
+		
 		db.execSQL(sbNoteSql.toString());
 		//t_file表新增sql
 		if(noteVO.getListAttachment().size()>0){
