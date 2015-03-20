@@ -26,6 +26,9 @@ public class LoginActivity extends BaseActivity {
 	private EditText mUsername;
 	private EditText mPassword;
 	private TextView mClearPassword;
+	
+	
+	
 	private SharedPreferences sharedPreferences;
 	
 	
@@ -45,13 +48,13 @@ public class LoginActivity extends BaseActivity {
 			public void onClick(View v) {
 				if(StringUtils.isBlank(mUsername.getText().toString())){
 					if(StringUtils.isBlank(mPassword.getText().toString())){
-						Toast.makeText(LoginActivity.this, "ÇëÊäÈëÓÃ»§ÃûºÍÃÜÂë", Toast.LENGTH_SHORT).show();
+						Toast.makeText(LoginActivity.this, "è¯·è¾“å…¥ç”¨æˆ·åå’Œå¯†ç ", Toast.LENGTH_SHORT).show();
 					}else{
-						Toast.makeText(LoginActivity.this, "ÇëÊäÈëÓÃ»§Ãû", Toast.LENGTH_SHORT).show();
+						Toast.makeText(LoginActivity.this, "è¯·è¾“å…¥ç”¨æˆ·å", Toast.LENGTH_SHORT).show();
 					}
 				}else{
 					if(StringUtils.isBlank(mPassword.getText().toString())){
-						Toast.makeText(LoginActivity.this, "ÇëÊäÈëÃÜÂë", Toast.LENGTH_SHORT).show();
+						Toast.makeText(LoginActivity.this, "è¯·è¾“å…¥å¯†ç ", Toast.LENGTH_SHORT).show();
 					}else{
 						MyApplication application = MyApplication.getInstance();
 						application.setUserId(mUsername.getText().toString());
@@ -88,7 +91,7 @@ public class LoginActivity extends BaseActivity {
 	}
 
 	private void saveUserInf(String userAccount, String password) {
-		// »ñÈ¡sharedPreferenceµÄ±à¼­Æ÷
+		// è·å–sharedPreferenceçš„ç¼–è¾‘å™¨
 		Editor editor = sharedPreferences.edit();
 		editor.putString(Constants.USER_NAME, userAccount);
 		if(StringUtils.isNotBlank(password)){
@@ -105,7 +108,7 @@ public class LoginActivity extends BaseActivity {
 	}
 	
 	/**
-	 * Òş²ØÊäÈë·¨
+	 * éšè—è¾“å…¥æ³•
 	 * @param view View
 	 */
 	private void hideIME(View view){
@@ -121,8 +124,8 @@ public class LoginActivity extends BaseActivity {
 //			android.os.Process.killProcess(android.os.Process.myPid());
 //			return true;
 //		}
-		Toast.makeText(this, "ÒÑÍË³ö", Toast.LENGTH_SHORT).show();
-		android.os.Process.killProcess(android.os.Process.myPid());    //»ñÈ¡PID 
+		Toast.makeText(this, "å·²é€€å‡º", Toast.LENGTH_SHORT).show();
+		android.os.Process.killProcess(android.os.Process.myPid());    //è·å–PID 
 		System.exit(0);  
 		return true;
 		//return super.onKeyDown(keyCode, event);
