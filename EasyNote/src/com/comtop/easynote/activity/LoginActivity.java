@@ -119,7 +119,11 @@ public class LoginActivity extends BaseActivity {
 //			android.os.Process.killProcess(android.os.Process.myPid());
 //			return true;
 //		}
-		return super.onKeyDown(keyCode, event);
+		Toast.makeText(this, "已退出", Toast.LENGTH_SHORT).show();
+		android.os.Process.killProcess(android.os.Process.myPid());    //获取PID 
+		System.exit(0);  
+		return true;
+		//return super.onKeyDown(keyCode, event);
 	}
 	
 }
